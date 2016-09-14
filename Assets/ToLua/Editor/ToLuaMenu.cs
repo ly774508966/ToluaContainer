@@ -974,7 +974,7 @@ public static class ToLuaMenu
     /// </summary>
     static string GetOS()
     {
-        return LuaConst.osDir;
+        return AppConst.osDir;
     }
 
     /// <summary>
@@ -1204,8 +1204,8 @@ public static class ToLuaMenu
     {
         ClearAllLuaFiles();
         string destDir = Application.dataPath + "/Resources" + "/Lua";
-        CopyLuaBytesFiles(LuaConst.luaDir, destDir);
-        CopyLuaBytesFiles(LuaConst.toluaDir, destDir);
+        CopyLuaBytesFiles(AppConst.luaDir, destDir);
+        CopyLuaBytesFiles(AppConst.toluaDir, destDir);
         AssetDatabase.Refresh();
         Debug.Log("Copy lua files over");
     }
@@ -1218,8 +1218,8 @@ public static class ToLuaMenu
     {
         ClearAllLuaFiles();
         string destDir = Application.persistentDataPath + "/" + GetOS() + "/Lua";
-        CopyLuaBytesFiles(LuaConst.luaDir, destDir, false);
-        CopyLuaBytesFiles(LuaConst.toluaDir, destDir, false);
+        CopyLuaBytesFiles(AppConst.luaDir, destDir, false);
+        CopyLuaBytesFiles(AppConst.toluaDir, destDir, false);
         AssetDatabase.Refresh();
         Debug.Log("Copy lua files over");
     }
@@ -1269,11 +1269,11 @@ public static class ToLuaMenu
         string path = Application.dataPath.Replace('\\', '/');
         path = path.Substring(0, path.LastIndexOf('/'));
         File.Copy(path + "/Luajit/Build.bat", tempDir +  "/Build.bat", true);
-        CopyLuaBytesFiles(LuaConst.luaDir, tempDir, false);
+        CopyLuaBytesFiles(AppConst.luaDir, tempDir, false);
         Process proc = Process.Start(tempDir + "/Build.bat");
         proc.WaitForExit();
         CopyLuaBytesFiles(tempDir + "/Out/", destDir, false, "*.lua.bytes");
-        CopyLuaBytesFiles(LuaConst.toluaDir, destDir);
+        CopyLuaBytesFiles(AppConst.toluaDir, destDir);
         
         Directory.Delete(tempDir, true);        
         AssetDatabase.Refresh();
@@ -1292,10 +1292,10 @@ public static class ToLuaMenu
         string path = Application.dataPath.Replace('\\', '/');
         path = path.Substring(0, path.LastIndexOf('/'));
         File.Copy(path + "/Luajit/Build.bat", tempDir + "/Build.bat", true);
-        CopyLuaBytesFiles(LuaConst.luaDir, tempDir, false);
+        CopyLuaBytesFiles(AppConst.luaDir, tempDir, false);
         Process proc = Process.Start(tempDir + "/Build.bat");
         proc.WaitForExit();        
-        CopyLuaBytesFiles(LuaConst.toluaDir, destDir, false);
+        CopyLuaBytesFiles(AppConst.toluaDir, destDir, false);
 
         path = tempDir + "/Out/";
         string[] files = Directory.GetFiles(path, "*.lua.bytes");
@@ -1333,8 +1333,8 @@ public static class ToLuaMenu
             Directory.CreateDirectory(tempDir);
         }        
 #endif
-        CopyLuaBytesFiles(LuaConst.luaDir, tempDir);
-        CopyLuaBytesFiles(LuaConst.toluaDir, tempDir);
+        CopyLuaBytesFiles(AppConst.luaDir, tempDir);
+        CopyLuaBytesFiles(AppConst.toluaDir, tempDir);
 
         AssetDatabase.Refresh();
         List<string> dirs = new List<string>();
@@ -1390,10 +1390,10 @@ public static class ToLuaMenu
         string path = Application.dataPath.Replace('\\', '/');
         path = path.Substring(0, path.LastIndexOf('/'));
         File.Copy(path + "/Luajit/Build.bat", tempDir + "/Build.bat", true);
-        CopyLuaBytesFiles(LuaConst.luaDir, tempDir, false);
+        CopyLuaBytesFiles(AppConst.luaDir, tempDir, false);
         Process proc = Process.Start(tempDir + "/Build.bat");
         proc.WaitForExit();
-        CopyLuaBytesFiles(LuaConst.toluaDir, tempDir + "/Out");
+        CopyLuaBytesFiles(AppConst.toluaDir, tempDir + "/Out");
 
         AssetDatabase.Refresh();
 

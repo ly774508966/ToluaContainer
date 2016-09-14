@@ -136,13 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\Custom\CustomSettings.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\BindingsPrinter\BindingsPrinterWindow.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\BindingsPrinter\EditorStyles.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\Commander\CommandReferenceDrawer.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\Commander\NamespaceCommandEditor.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\Commander\TimedCommandDispatchEditor.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\ContextRoots\ContextRootEditor.cs" />
-    <Compile Include="Assets\LuaContainer\Extensions\Editor\ContextRoots\ExecutionOrderUtils.cs" />
     <Compile Include="Assets\ToLua\Editor\Extend\ToLua_LuaInterface_EventObject.cs" />
     <Compile Include="Assets\ToLua\Editor\Extend\ToLua_LuaInterface_LuaConstructor.cs" />
     <Compile Include="Assets\ToLua\Editor\Extend\ToLua_LuaInterface_LuaField.cs" />
@@ -159,6 +152,13 @@
     <Compile Include="Assets\ToLua\Editor\ToLuaExport.cs" />
     <Compile Include="Assets\ToLua\Editor\ToLuaMenu.cs" />
     <Compile Include="Assets\ToLua\Editor\ToLuaTree.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\BindingsPrinter\BindingsPrinterWindow.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\BindingsPrinter\EditorStyles.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\Commander\CommandReferenceDrawer.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\Commander\NamespaceCommandEditor.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\Commander\TimedCommandDispatchEditor.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\ContextRoots\ContextRootEditor.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\Editor\ContextRoots\ExecutionOrderUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ToLua\readme.txt" />

@@ -173,24 +173,24 @@ namespace LuaInterface
             if (!LuaFileUtils.Instance.beZip)
             {
 #if UNITY_EDITOR
-                if (!Directory.Exists(LuaConst.luaDir))
+                if (!Directory.Exists(AppConst.luaDir))
                 {
-                    string msg = string.Format("luaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.luaDir);
+                    string msg = string.Format("luaDir path not exists: {0}, configer it in AppConst.cs", AppConst.luaDir);
                     throw new LuaException(msg);
                 }
 
-                if (!Directory.Exists(LuaConst.toluaDir))
+                if (!Directory.Exists(AppConst.toluaDir))
                 {
-                    string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
+                    string msg = string.Format("toluaDir path not exists: {0}, configer it in AppConst.cs", AppConst.toluaDir);
                     throw new LuaException(msg);
                 }
 
-                AddSearchPath(LuaConst.toluaDir);
-                AddSearchPath(LuaConst.luaDir);
+                AddSearchPath(AppConst.toluaDir);
+                AddSearchPath(AppConst.luaDir);
 #endif
                 if (LuaFileUtils.Instance.GetType() == typeof(LuaFileUtils))
                 {
-                    AddSearchPath(LuaConst.luaResDir);
+                    AddSearchPath(AppConst.luaResDir);
                 }
             }
         }
@@ -589,7 +589,7 @@ namespace LuaInterface
                 throw new LuaException(error);
             }
 
-            if (LuaConst.openZbsDebugger)
+            if (AppConst.openZbsDebugger)
             {
                 fileName = LuaFileUtils.Instance.FindFile(fileName);
             }

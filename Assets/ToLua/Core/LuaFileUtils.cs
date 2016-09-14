@@ -334,7 +334,7 @@ namespace LuaInterface
         /// </summary>
         public static string GetOSDir()
         {
-            return LuaConst.osDir;
+            return AppConst.osDir;
         }
     }
 }
