@@ -158,7 +158,7 @@ namespace ToluaContainer.Container
         /// <summary>
         /// 将 value 属性设为其自身的 type
         /// </summary>
-        virtual public IBinding ToSelf()
+        virtual public IBinding ToAddress()
         {
             // 每个 binding 只有一个 type，所以绑定到自身也必然只有一个值
             _constraint = ConstraintType.SINGLE;

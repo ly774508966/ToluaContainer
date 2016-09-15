@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToluaContainer.CSharp", "ToluaContainer.CSharp.csproj", "{1C1128CA-201D-179A-6219-40117FD3DE4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToluaContainer.CSharp.Editor", "ToluaContainer.CSharp.Editor.csproj", "{6B66BC01-F528-B227-C962-258249B26731}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C1128CA-201D-179A-6219-40117FD3DE4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1128CA-201D-179A-6219-40117FD3DE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1128CA-201D-179A-6219-40117FD3DE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1128CA-201D-179A-6219-40117FD3DE4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B66BC01-F528-B227-C962-258249B26731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B66BC01-F528-B227-C962-258249B26731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B66BC01-F528-B227-C962-258249B26731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B66BC01-F528-B227-C962-258249B26731}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

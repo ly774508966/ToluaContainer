@@ -72,7 +72,7 @@ namespace ToluaContainer.Container
 
         /// <summary>
         /// 将 value 属性设为其自身的 type
-        IBinding ToSelf();
+        IBinding ToAddress();
 
         /// <summary>
         /// 向 value 属性中添加一个类型
