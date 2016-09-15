@@ -204,6 +204,7 @@ namespace ToluaContainer.Container
         {
             if (container.id != null)
             {
+                print(container == null);
                 if (!containersDic.ContainsKey(container.id))
                 {
                     containersDic[container.id] = new List<IInjectionContainer>(1);
@@ -214,7 +215,14 @@ namespace ToluaContainer.Container
                     throw new InjectionSystemException(InjectionSystemException.SAME_OBJECT);
                 }
             }
-            else { containersDic[ContainerNullId.Null].Add(container); }
+            else
+            {
+                if(!containersDic.ContainsKey(ContainerNullId.Null))
+                {
+                    containersDic[ContainerNullId.Null] = new List<IInjectionContainer>();
+                }
+                containersDic[ContainerNullId.Null].Add(container);
+            }
         }
 
         #endregion
