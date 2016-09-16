@@ -33,11 +33,10 @@ namespace ToluaContainer.Examples.BindingGameObjects
             AddContainer<InjectionContainer>()
                 // 注册一个 UnityContainerAOT 到当前容器以供操作
                 .RegisterAOT<UnityContainerAOT>()
-                // 绑定 Transform 组建到 gameObject "Cube"
+                // 绑定 Transform 组件到 gameObject "Cube"
                 .Bind<Transform>().ToGameObject("Cube")
-                //Bind the "GameObjectRotator" component to a new ame object of the same name.
-                //This component will then receive the reference above so it can rotate the cube.
-                .Bind<RotateController>().ToGameObject()/**/;
+                // 绑定 GameObjectRotator 脚本到一个与脚本同名的新的空物体来控制 Cube 转动
+                .Bind<RotateController>().ToGameObject();
         }
 
         public override void Init()

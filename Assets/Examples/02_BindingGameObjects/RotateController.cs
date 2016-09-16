@@ -22,6 +22,7 @@
 
 using UnityEngine;
 using ToluaContainer.Container;
+using LuaInterface;
 
 namespace ToluaContainer.Examples.BindingGameObjects
 {
@@ -29,17 +30,36 @@ namespace ToluaContainer.Examples.BindingGameObjects
     {
         [Inject]
         public Transform objectToRotate;
+        LuaState lua = null;
+        LuaFunction func = null;
 
-        // Use this for initialization
         void Start()
         {
             this.Inject();
+
+            lua = new LuaState();
+            lua.Start();
+            //如果移动了ToLua目录，自己手动修复吧，只是例子就不做配置了
+            string fullPath = Application.dataPath + "\\Examples/02_BindingGameObjects";
+            lua.AddSearchPath(fullPath);
+            lua.Require("LuaRotator");
+            func = lua.GetFunction("test.Func");
+            print(func == null);
         }
 
-        // Update is called once per frame
         void Update()
         {
-            objectToRotate.Rotate(1.0f, 1.0f, 1.0f);
+            //objectToRotate.Rotate(1.0f, 1.0f, 1.0f);
+            CallFunc();
+        }
+
+
+        void CallFunc()
+        {
+            func.BeginPCall();
+            func.Push(objectToRotate);
+            func.PCall();
+            func.EndPCall();
         }
     }
 }

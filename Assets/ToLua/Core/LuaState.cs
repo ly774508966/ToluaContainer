@@ -152,6 +152,9 @@ namespace LuaInterface
             BeginModule("UnityEngine");
             UnityEngine_ObjectWrap.Register(this);            
             UnityEngine_CoroutineWrap.Register(this);
+            // 如果在传递参数等情况下提示没有对应的 Wrap 文件而实际上又已经 Wrap 了的话，应该在此处加上对应类型的 Wrap 类.Register(this) 语句
+            UnityEngine_TransformWrap.Register(this);
+
             EndModule(); //end UnityEngine
 
             EndModule(); //end global
@@ -196,7 +199,7 @@ namespace LuaInterface
         }
 
         /// <summary>
-        /// 执行 tolua.lua（require 相关文件）并
+        /// 执行 tolua.lua（require 相关文件）
         /// </summary>
         void OpenBaseLuaLibs()
         {
@@ -301,6 +304,9 @@ namespace LuaInterface
             preLoadMap[t] = func;
         }
 
+        /// <summary>
+        /// 从 preLoadMap 字典中获取 LuaCSFunction 并返回
+        /// </summary>
         public LuaCSFunction GetPreModule(Type t)
         {
             LuaCSFunction func = null;
@@ -508,9 +514,13 @@ namespace LuaInterface
             throw new LuaException("get lua function reference failed: " + name);                         
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static LuaState Get(IntPtr ptr)
         {
 #if !MULTI_STATE
+            // 如果只有一个 state 就返回它
             return mainState;
 #else
 

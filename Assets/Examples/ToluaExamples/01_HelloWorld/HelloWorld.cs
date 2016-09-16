@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using LuaInterface;
-using System;
 
 public class HelloWorld : MonoBehaviour
 {

@@ -40,7 +40,7 @@ namespace LuaInterface
         }
 
         /// <summary>
-        /// 
+        /// 被 LuaState 构造函数中的 OpenBaseLuaLibs 调用
         /// </summary>
         public static void OpenLuaLibs(IntPtr L)
         {                        

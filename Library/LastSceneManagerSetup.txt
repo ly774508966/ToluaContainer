@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Examples/01_HelloWorld/HelloWorld.unity
+- path: Assets/Examples/02_BindingGameObjects/BindingGameObjects.unity
   isLoaded: 1
   isActive: 1

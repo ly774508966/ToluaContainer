@@ -38,7 +38,10 @@ namespace LuaInterface
 {
     public static class ToLua
     {
-        public static bool useRelativePath = true;             //loader使用长路径还是相对路径
+        /// <summary>
+        /// loader使用长路径还是相对路径
+        /// </summary>
+        public static bool useRelativePath = true;
         static Type monoType = typeof(Type).GetType();
 
 #if UNITY_EDITOR

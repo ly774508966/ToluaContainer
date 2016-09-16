@@ -142,6 +142,9 @@ namespace LuaInterface
             return state.EnumMetatable;
         }        
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static LuaCSFunction GetPreModule(IntPtr L, Type t)
         {
             LuaState state = LuaState.Get(L);
