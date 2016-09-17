@@ -107,11 +107,15 @@ namespace LuaInterface
             stateMap.Add(L, this);                        
             OpenToLuaLibs();
             ToLua.OpenLibs(L);
+            // 注册 c# Wrap 文件
             OpenBaseLibs();                        
             LuaSetTop(0);
-            InitLuaPath();
+            InitLuaPath(); 
         }
 
+        /// <summary>
+        /// 注册 c# Wrap 文件，未在此调用 Register 方法的 c# 类型将无法被识别
+        /// </summary>
         void OpenBaseLibs()
         {            
             BeginModule(null);
@@ -152,8 +156,6 @@ namespace LuaInterface
             BeginModule("UnityEngine");
             UnityEngine_ObjectWrap.Register(this);            
             UnityEngine_CoroutineWrap.Register(this);
-            // 如果在传递参数等情况下提示没有对应的 Wrap 文件而实际上又已经 Wrap 了的话，应该在此处加上对应类型的 Wrap 类.Register(this) 语句
-            UnityEngine_TransformWrap.Register(this);
 
             EndModule(); //end UnityEngine
 

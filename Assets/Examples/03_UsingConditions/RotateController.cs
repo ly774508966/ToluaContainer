@@ -1,48 +1,68 @@
-﻿/*
- * Copyright (c) 2016 Joey1258
- *  
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *  
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *  
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- */
-
-using UnityEngine;
-using ToluaContainer.Container;
+﻿using UnityEngine;
+using LuaInterface;
 
 namespace ToluaContainer.Examples.UsingConditions
 {
     public class RotateController : MonoBehaviour
     {
-        /// <summary>
-        /// Object to rotate. It will only rotate the object with identifier "LeftCube".
-        /// </summary>
         [Inject("LeftCube")]
-        public Transform objectToRotate;
+        public Transform LeftCube;
+        [Inject("RightCube")]
+        public Transform RightCube;
 
-        // Use this for initialization
+        public LuaState lua { get; private set; }
+        LuaFunction func = null;
+
         void Start()
         {
+            lua = new LuaState();
+            lua.Start();
+            LuaBinder.Bind(lua);
+            // 获取 RotateController 的 lua 属性，并将其设置给 LuaLooper 的 luaState
+            SetUpLuaLooper();
 
+            // 如果移动了目录，请自行调整为相应路径
+            string fullPath = Application.dataPath + "\\Examples/03_UsingConditions";
+            lua.AddSearchPath(fullPath);
+            lua.Require("LuaCoroutineRotator");
+            LuaFunction setTrs = lua.GetFunction("SetTransform");
+
+            // 将 RightCube 传入 lua
+            setTrs.BeginPCall();
+            setTrs.Push(RightCube);
+            setTrs.PCall();
+            setTrs.EndPCall();
+
+            func = lua.GetFunction("StartDelay");
+
+            // 调用 lua 方法，由 LuaLooper 来协调 lua 脚本进行 Coroutine 使 RightCube 旋转
+            CallFunc();
         }
 
-        // Update is called once per frame
         void Update()
         {
-            objectToRotate.Rotate(1.0f, 1.0f, 1.0f);
+            // 在 c# 中使 LeftCube 旋转
+            LeftCube.Rotate(1.0f, 1.0f, 1.0f);
+        }
+
+        /// <summary>
+        /// 设置 LuaLooper 的 luaState
+        /// </summary>
+        void SetUpLuaLooper()
+        {
+            LuaLooper looper = UsingConditionsRoot.containers[0].GetTypes<LuaLooper>()[0].value as LuaLooper;
+            looper.luaState = lua;
+        }
+
+        /// <summary>
+        /// 调用 lua 函数而不产生 GC 的方式
+        /// </summary>
+        void CallFunc()
+        {
+            func.BeginPCall();
+            func.Push();
+            func.PCall();
+            func.EndPCall();
         }
     }
 }
