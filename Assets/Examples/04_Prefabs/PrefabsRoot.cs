@@ -38,7 +38,8 @@ namespace ToluaContainer.Examples.Prefabs
 				.Bind<Transform>().ToPrefab("04_Prefabs/Cube").As("cube")
 				//Bind the "Plane" prefab. It exists just to make the scene less empty.
 				.BindSingleton<GameObject>().ToPrefab("04_Prefabs/Plane");
-		}
+
+        }
 		
 		public override void Init() {
 			//Init the game.

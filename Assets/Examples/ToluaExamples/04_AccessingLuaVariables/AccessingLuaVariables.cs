@@ -25,6 +25,7 @@ public class AccessingLuaVariables : MonoBehaviour
     {        
         LuaState lua = new LuaState();
         lua.Start();
+        LuaBinder.Bind(lua);
         lua["Objs2Spawn"] = 5;
         lua.DoString(script);
 

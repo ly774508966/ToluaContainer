@@ -1,8 +1,4 @@
-local transform
-
-function SetTransform(trs)
-	transform = trs
-end
+transform = nil
 
 function Rotator()
 	transform:Rotate(-1.0, -1.0, -1.0)
@@ -19,8 +15,4 @@ end
 
 function StartDelay()
 	coDelay = coroutine.start(Delay)
-end
-
-function StopDelay()
-	coroutine.stop(coDelay)
 end

@@ -25,13 +25,9 @@ namespace ToluaContainer.Examples.UsingConditions
             string fullPath = Application.dataPath + "\\Examples/03_UsingConditions";
             lua.AddSearchPath(fullPath);
             lua.Require("LuaCoroutineRotator");
-            LuaFunction setTrs = lua.GetFunction("SetTransform");
 
             // 将 RightCube 传入 lua
-            setTrs.BeginPCall();
-            setTrs.Push(RightCube);
-            setTrs.PCall();
-            setTrs.EndPCall();
+            lua["transform"] = RightCube;
 
             func = lua.GetFunction("StartDelay");
 
@@ -44,6 +40,8 @@ namespace ToluaContainer.Examples.UsingConditions
             // 在 c# 中使 LeftCube 旋转
             LeftCube.Rotate(1.0f, 1.0f, 1.0f);
         }
+
+        #region functions
 
         /// <summary>
         /// 设置 LuaLooper 的 luaState
@@ -64,6 +62,8 @@ namespace ToluaContainer.Examples.UsingConditions
             func.PCall();
             func.EndPCall();
         }
+
+        #endregion
     }
 }
 
