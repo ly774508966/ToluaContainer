@@ -1,27 +1,18 @@
-﻿/*
- * Copyright (c) 2016 Joey1258
- *  
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *  
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *  
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+﻿/**
+ * This file is part of ToluaContainer.
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the MIT-LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Joey1258
+ * @link https://github.com/joey1258/ToluaContainer
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 using System;
 using UnityEngine;
+using Utils;
 
 namespace ToluaContainer.Container
 {
@@ -30,11 +21,14 @@ namespace ToluaContainer.Container
         #region exception text
 
         private const string TYPE_NOT_OBJECT = "The type must be UnityEngine.Object.";
+        private const string TYPE_NOT_ASSETBUNDLEINFO = "The type must be AssetBundleInfo.";
         private const string TYPE_NOT_COMPONENT = "The type must be UnityEngine.Component.";
         private const string GAMEOBJECT_IS_NULL = "GameObject is null";
         //private const string PREFAB_IS_NULL = "prefab is null";
         private const string RESOURCE_IS_NULL = "resource is null";
+        private const string ASSETBUNDLE_IS_NULL = "AssetBundle is null , Load fail : ";
         private const string VALUE_ISNOT_PREFAB = "The value must be PrefabInfo.";
+        private const string MUST_BE_UnityEngine_Object = "The value must be UnityEngine.Object.";
 
         #endregion
 
@@ -421,7 +415,7 @@ namespace ToluaContainer.Container
             TypeFilter(binding, type, isGameObject);
 
             var prefabInfo = new PrefabInfo(path, type);
-            prefabInfo.GetAsyncObject(_loaded, _progress);
+            CoroutineUtils.Instance.StartCoroutine(prefabInfo.GetAsyncObject(_loaded, _progress));
 
             if (prefabInfo.prefab == null)
             {
@@ -489,7 +483,7 @@ namespace ToluaContainer.Container
             TypeFilter(binding, type, isGameObject);
 
             var prefabInfo = new PrefabInfo(path, type);
-            prefabInfo.GetCoroutineObject(_loaded);
+            CoroutineUtils.Instance.StartCoroutine(prefabInfo.GetCoroutineObject(_loaded));
 
             if (prefabInfo.prefab == null)
             {
@@ -518,10 +512,201 @@ namespace ToluaContainer.Container
 
         #endregion
 
+        #region ToAssetBundleFromFile
+
+        /// <summary>
+        /// 绑定 AssetBundle 资源，将 AssetBundleInfo 作为 binding 的值.
+        /// </summary>
+        public static IBinding ToAssetBundleFromFile(this IBinding binding, string url)
+        {
+            var assetBundleInfo = new AssetBundleInfo(url);
+            assetBundleInfo.LoadFromFile();
+
+            if (binding.bindingType != BindingType.ADDRESS)
+            {
+                binding.SetBindingType(BindingType.SINGLETON);
+            }
+
+            binding.SetValue(assetBundleInfo);
+
+            binding.binder.Storing(binding);
+
+            return binding;
+        }
+
+        #endregion
+
+        #region ToAssetBundleAsyncFromFile
+
+        public static IBinding ToAssetBundleAsyncFromFile(this IBinding binding, string url)
+        {
+            return binding.ToAssetBundleAsyncFromFile(url, null, null);
+        }
+
+        public static IBinding ToAssetBundleAsyncFromFile(this IBinding binding, string url, Action<UnityEngine.Object> _loaded)
+        {
+            return binding.ToAssetBundleAsyncFromFile(url, _loaded, null);
+        }
+
+        public static IBinding ToAssetBundleAsyncFromFile(this IBinding binding, string url, Action<float> _progress)
+        {
+            return binding.ToAssetBundleAsyncFromFile(url, null, _progress);
+        }
+
+        /// <summary>
+        /// 异步绑定 AssetBundle 资源，将 AssetBundleInfo 作为 binding 的值
+        /// </summary>
+        public static IBinding ToAssetBundleAsyncFromFile(
+            this IBinding binding,
+            string url,
+            Action<UnityEngine.Object> _loaded,
+            Action<float> _progress)
+        {
+            var assetBundleInfo = new AssetBundleInfo(url);
+            CoroutineUtils.Instance.StartCoroutine(assetBundleInfo.GetAsyncFromFile(_loaded, _progress));
+
+            if (binding.bindingType != BindingType.ADDRESS)
+            {
+                binding.SetBindingType(BindingType.SINGLETON);
+            }
+
+            binding.SetValue(assetBundleInfo);
+
+            binding.binder.Storing(binding);
+
+            return binding;
+        }
+
+        #endregion
+
+        #region ToAssetBundleCoroutineFromFile
+
+        public static IBinding ToAssetBundleCoroutineFromFile(this IBinding binding, string url)
+        {
+            return binding.ToAssetBundleCoroutineFromFile(url, null);
+        }
+
+        /// <summary>
+        /// 携程绑定 AssetBundle 资源，将 AssetBundleInfo 作为 binding 的值
+        /// </summary>
+        public static IBinding ToAssetBundleCoroutineFromFile(
+            this IBinding binding,
+            string url,
+            Action<UnityEngine.Object> _loaded)
+        {
+            var assetBundleInfo = new AssetBundleInfo(url);
+            CoroutineUtils.Instance.StartCoroutine(assetBundleInfo.GetCoroutineFromFile(_loaded));
+            if (assetBundleInfo.asetBundle == null)
+            {
+                throw new BindingSystemException(
+                    string.Format(ASSETBUNDLE_IS_NULL, url));
+            }
+
+            if (binding.bindingType != BindingType.ADDRESS)
+            {
+                binding.SetBindingType(BindingType.SINGLETON);
+            }
+
+            binding.SetValue(assetBundleInfo);
+
+            binding.binder.Storing(binding);
+
+            return binding;
+        }
+
+        #endregion
+
+        #region ToAssetBundleNewWWW
+
+        /// <summary>
+        /// 通过新建 www 绑定 AssetBundle 资源，将 AssetBundleInfo 作为 binding 的值.
+        /// </summary>
+        public static IBinding ToAssetBundleFromNewWWW(this IBinding binding, string url)
+        {
+            var assetBundleInfo = new AssetBundleInfo(url);
+            assetBundleInfo.LoadFromMemory_NW();
+
+            if (binding.bindingType != BindingType.ADDRESS)
+            {
+                binding.SetBindingType(BindingType.SINGLETON);
+            }
+
+            binding.SetValue(assetBundleInfo);
+
+            binding.binder.Storing(binding);
+
+            return binding;
+        }
+
+        #endregion
+
+        #region ToAssetBundleFromCacheOrDownload
+
+        /// <summary>
+        /// 通过 www.LoadFromCacheOrDownload 绑定 AssetBundle 资源，将 AssetBundleInfo 作为
+        /// binding 的值.
+        /// </summary>
+        public static IBinding ToAssetBundleFromCacheOrDownload(this IBinding binding, string url)
+        {
+            var assetBundleInfo = new AssetBundleInfo(url);
+            assetBundleInfo.LoadFromCacheOrDownload();
+            
+            if (binding.bindingType != BindingType.ADDRESS)
+            {
+                binding.SetBindingType(BindingType.SINGLETON);
+            }
+
+            binding.SetValue(assetBundleInfo);
+
+            binding.binder.Storing(binding);
+
+            return binding;
+        }
+
+        #endregion
+
+        #region ToAssetBundleCoroutineFromCacheOrDownload
+
+        public static IBinding ToAssetBundleCoroutineFromCacheOrDownload(this IBinding binding, string url)
+        {
+            return binding.ToAssetBundleCoroutineFromCacheOrDownload(url, null);
+        }
+
+        /// <summary>
+        /// 携程通过 www.LoadFromCacheOrDownload 绑定 AssetBundle 资源，将 AssetBundleInfo 作为
+        /// binding 的值.
+        /// </summary>
+        public static IBinding ToAssetBundleCoroutineFromCacheOrDownload(
+            this IBinding binding,
+            string url,
+            Action<UnityEngine.Object> _loaded)
+        {
+            var assetBundleInfo = new AssetBundleInfo(url);
+            CoroutineUtils.Instance.StartCoroutine(assetBundleInfo.LoadCoroutineFromCacheOrDownload(_loaded));
+            if (assetBundleInfo.asetBundle == null)
+            {
+                throw new BindingSystemException(
+                    string.Format(ASSETBUNDLE_IS_NULL, url));
+            }
+
+            if (binding.bindingType != BindingType.ADDRESS)
+            {
+                binding.SetBindingType(BindingType.SINGLETON);
+            }
+
+            binding.SetValue(assetBundleInfo);
+
+            binding.binder.Storing(binding);
+
+            return binding;
+        }
+
+        #endregion
+
         #region ToResource
 
         /// <summary>
-        /// 绑定一个单例的资源（比如说声音等非 prefab 资源）
+        /// 绑定一个单例的资源但并不进行实例化（用于不需要立即实例化的场景或声音等非 prefab 资源）
         /// </summary>
         public static IBinding ToResource(this IBinding binding, string name)
         {
@@ -550,14 +735,29 @@ namespace ToluaContainer.Container
 
         public static IBinding Instantiate(this IBinding binding)
         {
-            return Instantiate(binding, null, 1);
+            return Instantiate(binding, null, 1, null);
         }
 
         public static IBinding Instantiate(
-            this IBinding binding, 
+            this IBinding binding,
+            string name)
+        {
+            return Instantiate(binding, null, 1, name);
+        }
+
+        public static IBinding Instantiate(
+            this IBinding binding,
             Action<object> handle)
         {
-            return Instantiate(binding, handle, 1);
+            return Instantiate(binding, handle, 1, null);
+        }
+
+        public static IBinding Instantiate(
+            this IBinding binding,
+            Action<object> handle,
+            string name)
+        {
+            return Instantiate(binding, handle, 1, name);
         }
 
         /// <summary>
@@ -565,50 +765,23 @@ namespace ToluaContainer.Container
         /// 需注意 ToPrefab 方法自身会进行一次实例化，在其后再调用 Instantiate 方法会实例化出多个物体
         /// </summary>
         public static IBinding Instantiate(
-            this IBinding binding, 
-            Action<object> handle, 
-            int times)
+            this IBinding binding,
+            Action<object> handle,
+            int times,
+            string name = null,
+            string gameobjectName = null)
         {
-            if (!(binding.value is PrefabInfo)){ throw new Exception(VALUE_ISNOT_PREFAB); }
-
-            var prefabInfo = (PrefabInfo)binding.value;
-            if (prefabInfo.prefab == null)
+            if (binding.value is PrefabInfo)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.RESOURCES_LOAD_FAILURE));
+                InstantiatePrefabInfo(binding, handle, times, name, gameobjectName);
             }
-
-            prefabInfo.useCount++;
-
-            if (prefabInfo.type.Equals(typeof(GameObject)))
+            else if (binding.value is AssetBundleInfo)
             {
-                GameObject[] gameObjectList = new GameObject[times];
-
-                for (int i = 0; i < times; i++)
-                {
-                    var gameObject = (GameObject)MonoBehaviour.Instantiate(prefabInfo.prefab);
-                    gameObjectList[i] = gameObject;
-                }
-
-                if (handle != null) { handle(gameObjectList); }
+                InstantiateAssetBundleInfo(binding, handle, times, name, gameobjectName);
             }
             else
             {
-                Component[] componentList = new Component[times];
-
-                for (int i = 0; i < times; i++)
-                {
-                    var gameObject = (GameObject)MonoBehaviour.Instantiate(prefabInfo.prefab);
-                    var component = gameObject.GetComponent(prefabInfo.type);
-
-                    if (component == null)
-                    {
-                        component = gameObject.AddComponent(prefabInfo.type);
-                        componentList[i] = component;
-                    }
-                }
-
-                if (handle != null) { handle(componentList); }
+                TryInstantiateObject(binding, handle, times, name, gameobjectName);
             }
 
             return binding;
@@ -621,15 +794,45 @@ namespace ToluaContainer.Container
         /// <summary>
         /// 从内存和 binding 中移除指定资源
         /// </summary>
-        public static IBinding ToUnload(this IBinding binding, object value)
+        public static IBinding Unload(this IBinding binding, object value)
         {
             var prefabInfo = (PrefabInfo)value;
             Resources.UnloadAsset(prefabInfo.prefab);
 
             binding.RemoveValue(value);
-            //TODO:: AssetBundle unload
 
             return binding;
+        }
+
+        #endregion
+
+        #region UnloadAssetBundle
+
+        /// <summary>
+        /// 释放资源(当参数为假时，asset 内的数据将被清除，之后无法再从 asset 进行任何加载，但已经加载的保持不变，为真时则清除所有，即使已经加载了的一并清除，对它们的引用将会失效)
+        /// </summary>
+        public static IBinding UnloadAssetBundle(this IBinding binding, bool unloadAllLoadedObjects)
+        {
+            if (binding.value.GetType() != typeof(AssetBundleInfo))
+            {
+                throw new Exception(TYPE_NOT_ASSETBUNDLEINFO);
+            }
+
+            ((AssetBundleInfo)binding.value).Dispose(unloadAllLoadedObjects);
+
+            return binding;
+        }
+
+        #endregion
+
+        #region CleanCache
+
+        /// <summary>
+        /// 释放当前程序中所有 www 对象缓存到本地的资源
+        /// </summary>
+        public static void CleanCache()
+        {
+            Caching.CleanCache();
         }
 
         #endregion
@@ -675,6 +878,187 @@ namespace ToluaContainer.Container
 
             if (!isGameObject && !isComponent) { throw new Exception(TYPE_NOT_COMPONENT); }
         }
+
+        #region Instantiate assist
+
+        private static void InstantiatePrefabInfo(
+            this IBinding binding,
+            Action<object> handle,
+            int times,
+            string name = null,
+            string gameobjectName = null)
+        {
+            var prefabInfo = (PrefabInfo)binding.value;
+            prefabInfo.useCount++;
+
+            if (prefabInfo.type.Equals(typeof(GameObject)))
+            {
+                GameObject[] gameObjectList = new GameObject[times];
+
+                for (int i = 0; i < times; i++)
+                {
+                    var gameObject = (GameObject)MonoBehaviour.Instantiate(prefabInfo.prefab);
+                    gameObjectList[i] = gameObject;
+                }
+
+                if (handle != null) { handle(gameObjectList); }
+            }
+            else
+            {
+                Component[] componentList = new Component[times];
+
+                for (int i = 0; i < times; i++)
+                {
+                    var gameObject = (GameObject)MonoBehaviour.Instantiate(prefabInfo.prefab);
+                    var component = gameObject.GetComponent(prefabInfo.type);
+
+                    if (component == null)
+                    {
+                        component = gameObject.AddComponent(prefabInfo.type);
+                        componentList[i] = component;
+                    }
+                }
+
+                if (handle != null) { handle(componentList); }
+            }
+        }
+
+        private static void InstantiateAssetBundleInfo(
+            this IBinding binding,
+            Action<object> handle,
+            int times,
+            string name = null,
+            string gameobjectName = null)
+        {
+            AssetBundleInfo asi = (AssetBundleInfo)binding.value;
+
+            if (!binding.type.Equals(typeof(AssetBundleInfo)))
+            {
+                Component[] componentList = new Component[times];
+
+                for (int i = 0; i < times; i++)
+                {
+                    var gameObject = (GameObject)MonoBehaviour.Instantiate(asi.asetBundle.LoadAsset(name));
+
+                    if (string.IsNullOrEmpty(gameobjectName))
+                    {
+                        gameObject.name = name;
+                    }
+                    else if (string.IsNullOrEmpty(gameobjectName) && !string.IsNullOrEmpty(name))
+                    {
+                        gameObject.name = gameobjectName;
+                    }
+
+                    var component = gameObject.GetComponent(binding.type);
+
+                    if (component == null)
+                    {
+                        component = gameObject.AddComponent(binding.type);
+                        componentList[i] = component;
+                    }
+                }
+
+                if (handle != null) { handle(componentList); }
+            }
+            else
+            {
+                GameObject[] gameObjectList = new GameObject[times];
+
+                for (int i = 0; i < times; i++)
+                {
+                    var gameObject = (GameObject)MonoBehaviour.Instantiate(asi.asetBundle.LoadAsset(name));
+
+                    if (string.IsNullOrEmpty(gameobjectName))
+                    {
+                        gameObject.name = name;
+                    }
+                    else if (string.IsNullOrEmpty(gameobjectName) && !string.IsNullOrEmpty(name))
+                    {
+                        gameObject.name = gameobjectName;
+                    }
+
+                    gameObjectList[i] = gameObject;
+                }
+
+                if (handle != null) { handle(gameObjectList); }
+            }
+        }
+
+        private static void TryInstantiateObject(
+            this IBinding binding,
+            Action<object> handle,
+            int times,
+            string name = null,
+            string gameobjectName = null)
+        {
+            if (binding.value is UnityEngine.Object)
+            {
+                if (!binding.type.Equals(typeof(GameObject)))
+                {
+                    try
+                    {
+                        Component[] componentList = new Component[times];
+
+                        for (int i = 0; i < times; i++)
+                        {
+                            var gameObject = (GameObject)MonoBehaviour.Instantiate((UnityEngine.Object)binding.value);
+
+
+                            if (string.IsNullOrEmpty(gameobjectName))
+                            {
+                                gameObject.name = name;
+                            }
+                            else if (string.IsNullOrEmpty(gameobjectName) && !string.IsNullOrEmpty(name))
+                            {
+                                gameObject.name = gameobjectName;
+                            }
+
+                            var component = gameObject.GetComponent(binding.type);
+
+                            if (component == null)
+                            {
+                                component = gameObject.AddComponent(binding.type);
+                                componentList[i] = component;
+                            }
+                        }
+
+                        if (handle != null) { handle(componentList); }
+                    }
+                    catch (Exception e) { throw (e); }
+                }
+                else
+                {
+                    try
+                    {
+                        GameObject[] gameObjectList = new GameObject[times];
+
+                        for (int i = 0; i < times; i++)
+                        {
+                            var gameObject = (GameObject)MonoBehaviour.Instantiate((UnityEngine.Object)binding.value);
+
+
+                            if (string.IsNullOrEmpty(gameobjectName))
+                            {
+                                gameObject.name = name;
+                            }
+
+                            else if (string.IsNullOrEmpty(gameobjectName) && !string.IsNullOrEmpty(name))
+                            {
+                                gameObject.name = gameobjectName;
+                            }
+
+                            gameObjectList[i] = gameObject;
+                        }
+
+                        if (handle != null) { handle(gameObjectList); }
+                    }
+                    catch (Exception e) { throw (e); }
+                }
+            }
+            else { throw new Exception(MUST_BE_UnityEngine_Object); }
+        }
+
+        #endregion
 
         #endregion
     }

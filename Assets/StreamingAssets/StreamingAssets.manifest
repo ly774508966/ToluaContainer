@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 3158453344
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: cube.prefab.unity3d
+      Dependencies: {}

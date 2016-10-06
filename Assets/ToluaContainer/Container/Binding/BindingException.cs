@@ -32,6 +32,7 @@ namespace ToluaContainer.Container
         public const string BINDINGTYPE_NOT_ASSIGNABLE = "ParameterlessMethod {0} does not allow for {1} type of binding.";
         public const string TYPE_NOT_FACTORY = "The type doesn't implement IFactory.";
         public const string RESOURCES_LOAD_FAILURE = "Resources Load Failure! path: {0}";
+        public const string ASSETBUNDLE_LOAD_FAILURE = "AssetBundle Load Failure! url: {0}";
 
         public BindingSystemException() : base() { }
         public BindingSystemException(string message) : base(message) { }

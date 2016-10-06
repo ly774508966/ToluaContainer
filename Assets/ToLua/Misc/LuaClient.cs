@@ -99,12 +99,12 @@ public class LuaClient : MonoBehaviour
         luaState.OpenLibs(LuaDLL.luaopen_bit);
 #endif
 
-        if (AppConst.openLuaSocket)
+        if (ToLuaConst.openLuaSocket)
         {
             OpenLuaSocket();            
         }        
 
-        if (AppConst.openZbsDebugger)
+        if (ToLuaConst.openZbsDebugger)
         {
             OpenZbsDebugger();
         }
@@ -115,20 +115,20 @@ public class LuaClient : MonoBehaviour
     /// </summary>
     public void OpenZbsDebugger(string ip = "localhost")
     {
-        if (!Directory.Exists(AppConst.zbsDir))
+        if (!Directory.Exists(ToLuaConst.zbsDir))
         {
-            Debugger.LogWarning("ZeroBraneStudio not install or AppConst.zbsDir not right");
+            Debugger.LogWarning("ZeroBraneStudio not install or ToLuaConst.zbsDir not right");
             return;
         }
 
-        if (!AppConst.openLuaSocket)
+        if (!ToLuaConst.openLuaSocket)
         {                            
             OpenLuaSocket();
         }
 
-        if (!string.IsNullOrEmpty(AppConst.zbsDir))
+        if (!string.IsNullOrEmpty(ToLuaConst.zbsDir))
         {
-            luaState.AddSearchPath(AppConst.zbsDir);
+            luaState.AddSearchPath(ToLuaConst.zbsDir);
         }
 
         luaState.LuaDoString(string.Format("DebugServerIp = '{0}'", ip));
@@ -157,7 +157,7 @@ public class LuaClient : MonoBehaviour
     /// </summary>
     protected void OpenLuaSocket()
     {
-        AppConst.openLuaSocket = true;
+        ToLuaConst.openLuaSocket = true;
 
         luaState.BeginPreLoad();
         luaState.RegFunction("socket.core", LuaOpen_Socket_Core);

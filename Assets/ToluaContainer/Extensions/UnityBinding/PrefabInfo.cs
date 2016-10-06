@@ -79,7 +79,7 @@ namespace ToluaContainer.Container
         /// </summary>
         public bool isLoaded
         {
-            get { return prefab != null; }
+            get { return _prefab != null; }
         }
 
         #endregion
@@ -131,25 +131,24 @@ namespace ToluaContainer.Container
             
             UnityEngine.ResourceRequest resRequest = UnityEngine.Resources.LoadAsync(path);
 
-            // 进度判断值不能为1，否则会卡住
-            while (resRequest.progress < 0.9)
-            {
-                if (progress != null) { progress(resRequest.progress); }
-                yield return null;
-            }
-
-            // 在0.9~1之间如果未完成继续读取
             while (!resRequest.isDone)
             {
                 if (progress != null) { progress(resRequest.progress); }
                 yield return null;
             }
-
             _prefab = resRequest.asset;
 
             if (handle != null) { handle(_prefab); }
-
             yield return resRequest;
+        }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void UnloadAsset()
+        {
+            UnityEngine.Resources.UnloadAsset(_prefab);
+            _prefab = null;
         }
 
         #endregion

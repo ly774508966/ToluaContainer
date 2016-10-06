@@ -22,7 +22,7 @@ namespace ToluaContainer.Examples.UsingConditions
             SetUpLuaLooper();
 
             // 如果移动了目录，请自行调整为相应路径
-            string fullPath = Application.dataPath + "\\Examples/03_UsingConditions";
+            string fullPath = Application.dataPath + "\\Files/lua/Examples/03_UsingConditions";
             lua.AddSearchPath(fullPath);
             lua.Require("LuaCoroutineRotator");
 

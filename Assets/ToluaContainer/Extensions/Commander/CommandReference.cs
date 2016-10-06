@@ -22,6 +22,7 @@
 
 using System;
 using ToluaContainer.Container;
+using Utils;
 
 namespace ToluaContainer
 {

@@ -22,6 +22,7 @@
 
 using System;
 using UnityEngine;
+using Utils;
 
 namespace ToluaContainer.Container
 {

@@ -207,7 +207,7 @@ namespace LuaInterface
                     return 1;
                 }
 
-                if (AppConst.openZbsDebugger)
+                if (ToLuaConst.openZbsDebugger)
                 {
                     fileName = LuaFileUtils.Instance.FindFile(fileName);
                 }
@@ -524,9 +524,9 @@ namespace LuaInterface
         {
             if (_instanceID == -1)
             {
-                int start = AppConst.toluaDir.IndexOf("Assets");
-                int end = AppConst.toluaDir.LastIndexOf("/Lua");
-                string dir = AppConst.toluaDir.Substring(start, end - start);
+                int start = ToLuaConst.toluaDir.IndexOf("Assets");
+                int end = ToLuaConst.toluaDir.LastIndexOf("/Lua");
+                string dir = ToLuaConst.toluaDir.Substring(start, end - start);
                 dir += "/Core/ToLua.cs";
                 _instanceID = AssetDatabase.LoadAssetAtPath(dir, typeof(MonoScript)).GetInstanceID();//"Assets/ToLua/Core/ToLua.cs"
             }

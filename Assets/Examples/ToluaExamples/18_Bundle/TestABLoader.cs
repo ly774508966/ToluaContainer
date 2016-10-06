@@ -53,7 +53,7 @@ public class TestABLoader : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
         string main = streamingPath + "/" + LuaConst.osDir + "/" + LuaConst.osDir;
 #else
-        string main = "file:///" + streamingPath + "/" + AppConst.osDir + "/" + AppConst.osDir;
+        string main = "file:///" + streamingPath + "/" + ToLuaConst.osDir + "/" + ToLuaConst.osDir;
 #endif
         WWW www = new WWW(main);
         yield return www;
@@ -73,7 +73,7 @@ public class TestABLoader : MonoBehaviour
 #if UNITY_ANDROID && !UNITY_EDITOR
             string path = streamingPath + "/" + LuaConst.osDir + "/" + str;
 #else
-            string path = "file:///" + streamingPath + "/" + AppConst.osDir + "/" + str;
+            string path = "file:///" + streamingPath + "/" + ToLuaConst.osDir + "/" + str;
 #endif
             string name = Path.GetFileNameWithoutExtension(str);
             StartCoroutine(CoLoadBundle(name, path));            

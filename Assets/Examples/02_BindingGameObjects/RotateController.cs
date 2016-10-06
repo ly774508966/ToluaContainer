@@ -20,7 +20,7 @@ namespace ToluaContainer.Examples.BindingGameObjects
             LuaBinder.Bind(lua);
 
             // 如果移动了目录，请自行调整为相应路径
-            string fullPath = Application.dataPath + "\\Examples/02_BindingGameObjects";
+            string fullPath = Application.dataPath + "\\Files/lua/Examples/02_BindingGameObjects";
             lua.AddSearchPath(fullPath);
             lua.Require("LuaRotator");
             func = lua.GetFunction("test.Func");

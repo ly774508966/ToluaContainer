@@ -18,7 +18,6 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.6f1</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -64,23 +63,13 @@
     <Reference Include="Mono.Cecil">
       <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Debugger">
       <HintPath>Assets\Plugins\Debugger.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AppDefine\AppDefine.cs" />
+    <Compile Include="Assets\AppDefine\ToLuaConst.cs" />
     <Compile Include="Assets\Examples\01_HelloWorld\HelloWorld.cs" />
     <Compile Include="Assets\Examples\01_HelloWorld\HelloWorldRoot.cs" />
     <Compile Include="Assets\Examples\02_BindingGameObjects\BindingGameObjectsRoot.cs" />
@@ -89,14 +78,22 @@
     <Compile Include="Assets\Examples\03_UsingConditions\UsingConditionsRoot.cs" />
     <Compile Include="Assets\Examples\04_Prefabs\CubeRotator.cs" />
     <Compile Include="Assets\Examples\04_Prefabs\PrefabsRoot.cs" />
-    <Compile Include="Assets\Examples\05_Commander\Scripts\Commands\RotateGameObjectCommand.cs" />
-    <Compile Include="Assets\Examples\05_Commander\Scripts\Commands\SpawnGameObjectCommand.cs" />
-    <Compile Include="Assets\Examples\05_Commander\Scripts\GameRoot.cs" />
-    <Compile Include="Assets\Examples\06_BindingsSetup\Scripts\Behaviours\CubeRotator.cs" />
-    <Compile Include="Assets\Examples\06_BindingsSetup\Scripts\Bindings\DataBindings.cs" />
-    <Compile Include="Assets\Examples\06_BindingsSetup\Scripts\Bindings\PrefabBindings.cs" />
-    <Compile Include="Assets\Examples\06_BindingsSetup\Scripts\Data\CubeRotationSpeed.cs" />
-    <Compile Include="Assets\Examples\06_BindingsSetup\Scripts\GameRoot.cs" />
+    <Compile Include="Assets\Examples\05_AssetBundle\AssetBundleRoot.cs" />
+    <Compile Include="Assets\Examples\05_AssetBundle\CubeRotator.cs" />
+    <Compile Include="Assets\Examples\06_Commander\Scripts\Commands\RotateGameObjectCommand.cs" />
+    <Compile Include="Assets\Examples\06_Commander\Scripts\Commands\SpawnGameObjectCommand.cs" />
+    <Compile Include="Assets\Examples\06_Commander\Scripts\GameRoot.cs" />
+    <Compile Include="Assets\Examples\07_BindingsSetup\Scripts\Behaviours\CubeRotator.cs" />
+    <Compile Include="Assets\Examples\07_BindingsSetup\Scripts\Bindings\DataBindings.cs" />
+    <Compile Include="Assets\Examples\07_BindingsSetup\Scripts\Bindings\PrefabBindings.cs" />
+    <Compile Include="Assets\Examples\07_BindingsSetup\Scripts\Data\CubeRotationSpeed.cs" />
+    <Compile Include="Assets\Examples\07_BindingsSetup\Scripts\GameRoot.cs" />
+    <Compile Include="Assets\Examples\08_Factory\Scripts\Behaviours\Cube.cs" />
+    <Compile Include="Assets\Examples\08_Factory\Scripts\Behaviours\Rotator.cs" />
+    <Compile Include="Assets\Examples\08_Factory\Scripts\Bindings\FactoryBindings.cs" />
+    <Compile Include="Assets\Examples\08_Factory\Scripts\Commands\SpawnObjectsCommand.cs" />
+    <Compile Include="Assets\Examples\08_Factory\Scripts\Factories\CubeFactory.cs" />
+    <Compile Include="Assets\Examples\08_Factory\Scripts\GameRoot.cs" />
     <Compile Include="Assets\Examples\ToluaExamples\01_HelloWorld\HelloWorld.cs" />
     <Compile Include="Assets\Examples\ToluaExamples\02_ScriptsFromFile\ScriptsFromFile.cs" />
     <Compile Include="Assets\Examples\ToluaExamples\03_CallLuaFunction\CallLuaFunction.cs" />
@@ -136,7 +133,6 @@
     <Compile Include="Assets\Examples\ToluaExamples\TestOverload\TestExportWrap.cs" />
     <Compile Include="Assets\Examples\ToluaExamples\TestOverload\TestExport_SpaceWrap.cs" />
     <Compile Include="Assets\Examples\ToluaExamples\TestOverload\TestOverload.cs" />
-    <Compile Include="Assets\Source\AppConst.cs" />
     <Compile Include="Assets\Source\Generate\DelegateFactory.cs" />
     <Compile Include="Assets\Source\Generate\LuaBinder.cs" />
     <Compile Include="Assets\Source\Generate\LuaInterface_DebuggerWrap.cs" />
@@ -194,6 +190,10 @@
     <Compile Include="Assets\Source\Generate\UnityEngine_TransformWrap.cs" />
     <Compile Include="Assets\Source\Generate\UnityEngine_WWWWrap.cs" />
     <Compile Include="Assets\Source\Generate\UnityEngine_WrapModeWrap.cs" />
+    <Compile Include="Assets\TempTest\NewBehaviourScript.cs" />
+    <Compile Include="Assets\TempTest\PostStream.cs" />
+    <Compile Include="Assets\TempTest\test001.cs" />
+    <Compile Include="Assets\TempTest\test002.cs" />
     <Compile Include="Assets\ToLua\BaseType\LuaInterface_EventObjectWrap.cs" />
     <Compile Include="Assets\ToLua\BaseType\LuaInterface_LuaConstructorWrap.cs" />
     <Compile Include="Assets\ToLua\BaseType\LuaInterface_LuaFieldWrap.cs" />
@@ -291,21 +291,27 @@
     <Compile Include="Assets\ToluaContainer\Extensions\Event\EventBehaviour.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Event\EventContainerAOT.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Event\Interface\IUpdatable.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\MonoInjection\InjectionUtil.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\MonoInjection\MonoInjection.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Pool\Interface\IPool.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Pool\Pool.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Pool\PoolException.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\StateInjection\StateInjection.cs" />
+    <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\AssetBundleInfo.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\PrefabInfo.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\UnityBindingExtension.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\UnityContainerAOT.cs" />
-    <Compile Include="Assets\ToluaContainer\Util\CompareUtils.cs" />
-    <Compile Include="Assets\ToluaContainer\Util\InjectionUtil.cs" />
-    <Compile Include="Assets\ToluaContainer\Util\MethodUtils.cs" />
-    <Compile Include="Assets\ToluaContainer\Util\TypeUtils.cs" />
-    <Compile Include="Assets\ToluaContainer\Util\UtilsException.cs" />
+    <Compile Include="Assets\Util\CompareUtils.cs" />
+    <Compile Include="Assets\Util\CoroutineUtils.cs" />
+    <Compile Include="Assets\Util\Md5Utils.cs" />
+    <Compile Include="Assets\Util\MethodUtils.cs" />
+    <Compile Include="Assets\Util\PackagerUtils.cs" />
+    <Compile Include="Assets\Util\PathUtils.cs" />
+    <Compile Include="Assets\Util\TypeUtils.cs" />
+    <Compile Include="Assets\Util\UtilsException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\StreamingAssets\files.txt" />
     <None Include="Assets\ToLua\readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

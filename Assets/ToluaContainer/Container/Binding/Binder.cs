@@ -221,20 +221,20 @@ namespace ToluaContainer.Container
 
                 if (binding.constraint == ConstraintType.MULTIPLE)
                 {
-                    if (CompareUtils.isSameValueIList(
+                    if (Utils.CompareUtils.isSameValueIList(
                         typeBindings[binding.type][i].valueList,
                         binding.valueList) &&
-                        !CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
+                        !Utils.CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
                     {
                         bindingList.Add(typeBindings[binding.type][i]);
                     }
                 }
                 else
                 {
-                    if (CompareUtils.isSameObject(
+                    if (Utils.CompareUtils.isSameObject(
                         typeBindings[binding.type][i].value,
                         binding.value) &&
-                        !CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
+                        !Utils.CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
                     {
                         bindingList.Add(typeBindings[binding.type][i]);
                     }

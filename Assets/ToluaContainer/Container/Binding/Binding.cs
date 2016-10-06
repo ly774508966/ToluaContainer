@@ -1,23 +1,13 @@
-﻿/*
- * Copyright (c) 2016 Joey1258
- *  
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *  
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *  
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+﻿/**
+ * This file is part of ToluaContainer.
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the MIT-LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Joey1258
+ * @link https://github.com/joey1258/ToluaContainer
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 /*
@@ -470,22 +460,22 @@ namespace ToluaContainer.Container
             {
                 if (v is Type)
                 {
-                    return TypeUtils.IsAssignable(typeof(IInjectionFactory), (v as Type));
+                    return Utils.TypeUtils.IsAssignable(typeof(IInjectionFactory), (v as Type));
                 }
 
-                return TypeUtils.IsAssignable(typeof(IInjectionFactory), v.GetType());
+                return Utils.TypeUtils.IsAssignable(typeof(IInjectionFactory), v.GetType());
             }
 
             // 如果 binding 是 ADDRESS 类型，返回自身 type 与参数 v 是否是同类或继承关系
-            if (v is Type) { return TypeUtils.IsAssignable(_type, (v as Type)); }
+            if (v is Type) { return Utils.TypeUtils.IsAssignable(_type, (v as Type)); }
 
-            return TypeUtils.IsAssignable(_type, v.GetType());
+            return Utils.TypeUtils.IsAssignable(_type, v.GetType());
         }
 
         #region set binding property
 
         /// <summary>
-        /// 设置 binding 的值
+        /// 设置 binding 的值(如果是 MULTIPLE 类型则增加，否则覆盖)
         /// </summary>
         virtual public IBinding SetValue(object o)
         {

@@ -183,7 +183,7 @@ namespace ToluaContainer.Container
         #region SetProperty
 
         /// <summary>
-        /// 设置 binding 的值
+        /// 设置 binding 的值(如果是 MULTIPLE 类型则增加，否则覆盖)
         /// </summary>
         IBinding SetValue(object obj);
 

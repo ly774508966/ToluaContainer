@@ -124,7 +124,7 @@ public class LuaResLoader : LuaFileUtils
 
         if (!Path.IsPathRooted(fileName))
         {            
-            path = string.Format("{0}/{1}", AppConst.luaResDir, fileName);            
+            path = string.Format("{0}/{1}", ToLuaConst.luaResDir, fileName);            
         }
 
         if (File.Exists(path))
