@@ -18,20 +18,6 @@ namespace ToluaContainer.Container
 {
     public static class UnityBindingExtension
     {
-        #region exception text
-
-        private const string TYPE_NOT_OBJECT = "The type must be UnityEngine.Object.";
-        private const string TYPE_NOT_ASSETBUNDLEINFO = "The type must be AssetBundleInfo.";
-        private const string TYPE_NOT_COMPONENT = "The type must be UnityEngine.Component.";
-        private const string GAMEOBJECT_IS_NULL = "GameObject is null";
-        //private const string PREFAB_IS_NULL = "prefab is null";
-        private const string RESOURCE_IS_NULL = "resource is null";
-        private const string ASSETBUNDLE_IS_NULL = "AssetBundle is null , Load fail : ";
-        private const string VALUE_ISNOT_PREFAB = "The value must be PrefabInfo.";
-        private const string MUST_BE_UnityEngine_Object = "The value must be UnityEngine.Object.";
-
-        #endregion
-
         #region ToGameObject
 
         public static IBinding ToGameObject(this IBinding binding)
@@ -275,9 +261,9 @@ namespace ToluaContainer.Container
         {
             if(binding.bindingType == BindingType.FACTORY)
             {
-                throw new BindingSystemException(
+                throw new Exceptions(
                     string.Format(
-                        BindingSystemException.BINDINGTYPE_NOT_ASSIGNABLE,
+                        Exceptions.BINDINGTYPE_NOT_ASSIGNABLE,
                         "ToGameObjectsWithTag",
                         "FACTORY"));
             }
@@ -334,8 +320,8 @@ namespace ToluaContainer.Container
             var prefabInfo = new PrefabInfo(path, type);
             if (prefabInfo.prefab == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.RESOURCES_LOAD_FAILURE, path));
+                throw new Exceptions(
+                    string.Format(Exceptions.RESOURCES_LOAD_FAILURE, path));
             }
 
             if (binding.bindingType == BindingType.ADDRESS)
@@ -419,8 +405,8 @@ namespace ToluaContainer.Container
 
             if (prefabInfo.prefab == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.RESOURCES_LOAD_FAILURE, path));
+                throw new Exceptions(
+                    string.Format(Exceptions.RESOURCES_LOAD_FAILURE, path));
             }
 
             if (binding.bindingType == BindingType.ADDRESS)
@@ -487,8 +473,8 @@ namespace ToluaContainer.Container
 
             if (prefabInfo.prefab == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.RESOURCES_LOAD_FAILURE, path));
+                throw new Exceptions(
+                    string.Format(Exceptions.RESOURCES_LOAD_FAILURE, path));
             }
 
             if (binding.bindingType == BindingType.ADDRESS)
@@ -598,8 +584,8 @@ namespace ToluaContainer.Container
             CoroutineUtils.Instance.StartCoroutine(assetBundleInfo.GetCoroutineFromFile(_loaded));
             if (assetBundleInfo.asetBundle == null)
             {
-                throw new BindingSystemException(
-                    string.Format(ASSETBUNDLE_IS_NULL, url));
+                throw new Exceptions(
+                    string.Format(Exceptions.ASSETBUNDLE_LOAD_FAILURE, url));
             }
 
             if (binding.bindingType != BindingType.ADDRESS)
@@ -685,8 +671,8 @@ namespace ToluaContainer.Container
             CoroutineUtils.Instance.StartCoroutine(assetBundleInfo.LoadCoroutineFromCacheOrDownload(_loaded));
             if (assetBundleInfo.asetBundle == null)
             {
-                throw new BindingSystemException(
-                    string.Format(ASSETBUNDLE_IS_NULL, url));
+                throw new Exceptions(
+                    string.Format(Exceptions.ASSETBUNDLE_LOAD_FAILURE, url));
             }
 
             if (binding.bindingType != BindingType.ADDRESS)
@@ -712,13 +698,15 @@ namespace ToluaContainer.Container
         {
             if (!TypeUtils.IsAssignable(typeof(UnityEngine.Object), binding.type))
             {
-                throw new Exception(TYPE_NOT_OBJECT);
+                throw new Exceptions(
+                    string.Format(Exceptions.NON_SPECIFIED_TYPE, "UnityEngine.Object"));
             }
 
             var resource = Resources.Load(name);
             if (resource == null)
             {
-                throw new Exception(RESOURCE_IS_NULL);
+                throw new Exceptions(
+                    string.Format(Exceptions.RESOURCE_LOAD_FAILURE, name));
             }
 
             binding.SetBindingType(BindingType.SINGLETON);
@@ -815,7 +803,8 @@ namespace ToluaContainer.Container
         {
             if (binding.value.GetType() != typeof(AssetBundleInfo))
             {
-                throw new Exception(TYPE_NOT_ASSETBUNDLEINFO);
+                throw new Exceptions(
+                    string.Format(Exceptions.NON_SPECIFIED_TYPE, "AssetBundleInfo"));
             }
 
             ((AssetBundleInfo)binding.value).Dispose(unloadAllLoadedObjects);
@@ -845,7 +834,7 @@ namespace ToluaContainer.Container
             bool typeIsGameObject)
         {
             // 如果参数 gameObject 为空就抛出异常
-            if (gameObject == null) { throw new Exception(GAMEOBJECT_IS_NULL); }
+            if (gameObject == null) { throw new Exceptions(Exceptions.GAMEOBJECT_IS_NULL); }
 
             // 如果参数 type 是 GameObject 类型,就将 gameObject 作为 binding 的值
             if (typeIsGameObject)
@@ -870,13 +859,17 @@ namespace ToluaContainer.Container
             // 过滤不匹配的类型
             if (!TypeUtils.IsAssignable(binding.type, type))
             {
-                throw new BindingSystemException(BindingSystemException.TYPE_NOT_ASSIGNABLE);
+                throw new Exceptions(Exceptions.TYPE_NOT_ASSIGNABLE);
             }
 
             // 过滤既不是 GameObject 也不是 Component 的 type 参数
             var isComponent = TypeUtils.IsAssignable(typeof(Component), type);
 
-            if (!isGameObject && !isComponent) { throw new Exception(TYPE_NOT_COMPONENT); }
+            if (!isGameObject && !isComponent)
+            {
+                throw new Exceptions(
+                    string.Format(Exceptions.NON_SPECIFIED_TYPE, "UnityEngine.Component"));
+            }
         }
 
         #region Instantiate assist
@@ -1055,7 +1048,11 @@ namespace ToluaContainer.Container
                     catch (Exception e) { throw (e); }
                 }
             }
-            else { throw new Exception(MUST_BE_UnityEngine_Object); }
+            else
+            {
+                throw new Exceptions(
+                    string.Format(Exceptions.NON_SPECIFIED_TYPE, "UnityEngine.Object"));
+            }
         }
 
         #endregion

@@ -10,11 +10,8 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-/*
- * 由于Info的值约束类型默认就是MANY，所以无需特意写一个MANY创建方法。
- */
-
 using System;
+using Utils;
 
 namespace ToluaContainer.Container
 {
@@ -140,7 +137,7 @@ namespace ToluaContainer.Container
             // 不允许参数长度大于 bindings 长度
             if (os.Length > bindings.Length)
             {
-                throw new BindingSystemException(BindingSystemException.PARAMETERS_LENGTH_ERROR);
+                throw new Exceptions(Exceptions.PARAMETERS_LENGTH_ERROR);
             }
 
             int length = bindings.Length;
@@ -168,7 +165,7 @@ namespace ToluaContainer.Container
             // 由于 id 必须是唯一的，所以如果参数和 binding的数量不同则将抛出异常
             if (os.Length != bindings.Length)
             {
-                throw new BindingSystemException(BindingSystemException.PARAMETERS_LENGTH_ERROR);
+                throw new Exceptions(Exceptions.PARAMETERS_LENGTH_ERROR);
             }
 
             int length = bindings.Length;
@@ -189,7 +186,7 @@ namespace ToluaContainer.Container
             // 不允许参数长度大于 bindings 长度
             if (cs.Length > bindings.Length)
             {
-                throw new BindingSystemException(BindingSystemException.PARAMETERS_LENGTH_ERROR);
+                throw new Exceptions(Exceptions.PARAMETERS_LENGTH_ERROR);
             }
 
             int length = bindings.Length;
@@ -213,7 +210,7 @@ namespace ToluaContainer.Container
             // 不允许参数长度大于 bindings 长度
             if (ts.Length > bindings.Length)
             {
-                throw new BindingSystemException(BindingSystemException.PARAMETERS_LENGTH_ERROR);
+                throw new Exceptions(Exceptions.PARAMETERS_LENGTH_ERROR);
             }
 
             int length = bindings.Length;
@@ -268,7 +265,7 @@ namespace ToluaContainer.Container
 
             if (types.Length != bindingTypes.Length)
             {
-                throw new BindingSystemException(BindingSystemException.PARAMETERS_LENGTH_ERROR);
+                throw new Exceptions(Exceptions.PARAMETERS_LENGTH_ERROR);
             }
 
             return MultipleCreate(types, bindingTypes);

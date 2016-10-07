@@ -1,49 +1,31 @@
-﻿/*
- * Copyright (c) 2016 Joey1258
- *  
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *  
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *  
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- */
-
-/*
- * 当 binding 为 ADDRESS 类型时其值只能为 Type，其会对相同的值进行过滤（对 typeBindings 进行遍历）
- * 因此 ADDRESS 类型的 binding 早于其它类型的 binding 添加的效率将有别于相反的顺序
+﻿/**
+ * This file is part of ToluaContainer.
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the MIT-LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Joey1258
+ * @link https://github.com/joey1258/ToluaContainer
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
 using System;
 using System.Collections.Generic;
+using Utils;
 
 namespace ToluaContainer.Container
 {
     public class Binder : IBinder
     {
         protected IBindingFactory bindingFactory;
-        protected Storage<IBinding> bindingStorage;
         protected Dictionary<Type, IList<IBinding>> typeBindings;
-        protected Dictionary<object, IList<IBinding>> idBindings;
 
         #region constructor
 
         public Binder()
         {
-            bindingStorage = new Storage<IBinding>();
             typeBindings = new Dictionary<Type, IList<IBinding>>();
-            idBindings = new Dictionary<object, IList<IBinding>>();
             bindingFactory = new BindingFactory(this);
         }
 
@@ -150,7 +132,7 @@ namespace ToluaContainer.Container
 
             if (types.Length != bindingTypes.Length)
             {
-                throw new BindingSystemException(BindingSystemException.PARAMETERS_LENGTH_ERROR);
+                throw new Exceptions(Exceptions.PARAMETERS_LENGTH_ERROR);
             }
 
             return bindingFactory.MultipleCreate(types, bindingTypes);
@@ -182,8 +164,29 @@ namespace ToluaContainer.Container
         /// </summary>
         virtual public IList<IBinding> GetIds(object id)
         {
-            if (!idBindings.ContainsKey(id)) { return null; }
-            return idBindings[id];
+            if (id == null)
+            {
+                throw new Exceptions(string.Format(Exceptions.PARAMETER_NUll, "id"));
+            }
+
+            List<IBinding> idBindings = new List<IBinding>();
+
+            List<Type> keys = new List<Type>(typeBindings.Keys);
+            int lenght = keys.Count;
+            for(int i = 0; i < lenght; i++)
+            {
+                int count = typeBindings[keys[i]].Count;
+                for (int n = 0; n < count; n++)
+                {
+                    if (id.Equals(typeBindings[keys[i]][n].id))
+                    {
+                        idBindings.Add(typeBindings[keys[i]][n]);
+                    }
+                }
+            }
+
+            if (idBindings.Count == 0) { return null; }
+            else { return idBindings; }
         }
 
         /// <summary>
@@ -193,9 +196,7 @@ namespace ToluaContainer.Container
         {
             List<IBinding> bindingList = new List<IBinding>();
 
-            // 获取 typeBindings 中所有的 binding
             List<Type> keys = new List<Type>(typeBindings.Keys);
-
             int length = typeBindings.Count;
             for (int i = 0; i < length; i++)
             {
@@ -221,20 +222,20 @@ namespace ToluaContainer.Container
 
                 if (binding.constraint == ConstraintType.MULTIPLE)
                 {
-                    if (Utils.CompareUtils.isSameValueIList(
+                    if (CompareUtils.isSameValueIList(
                         typeBindings[binding.type][i].valueList,
                         binding.valueList) &&
-                        !Utils.CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
+                        !CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
                     {
                         bindingList.Add(typeBindings[binding.type][i]);
                     }
                 }
                 else
                 {
-                    if (Utils.CompareUtils.isSameObject(
+                    if (CompareUtils.isSameObject(
                         typeBindings[binding.type][i].value,
                         binding.value) &&
-                        !Utils.CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
+                        !CompareUtils.isSameObject(typeBindings[binding.type][i], binding))
                     {
                         bindingList.Add(typeBindings[binding.type][i]);
                     }
@@ -257,7 +258,20 @@ namespace ToluaContainer.Container
         /// </summary>
 		virtual public IBinding GetBinding(Type type, object id)
         {
-            return bindingStorage[type][id];
+            if(id == null)
+            {
+                throw new Exceptions(string.Format(Exceptions.PARAMETER_NUll, "id"));
+            }
+
+            var bindings = typeBindings[type];
+
+            int lenght = bindings.Count;
+            for (int i = 0; i < lenght; i++)
+            {
+                if (id.Equals(bindings[i].id)) { return bindings[i];}
+            }
+
+            return null;
         }
 
         #endregion
@@ -285,15 +299,11 @@ namespace ToluaContainer.Container
                 if (beforeRemoveBinding != null) { beforeRemoveBinding(this, bindings); }
 
                 int length = bindings.Count;
+                // 使用 while 不稳定且容易死循环，必须使用稳定的 for
                 for (int i = 0; i < length; i++)
                 {
                     RemoveBinding(bindings[0]);
                 }
-                /* 使用 while 在未知情况的综合作用下会死循环（表现为同时测试所有单元时会导致U3D无相应）
-                while (bindings.Count > 0)
-                {
-                    RemoveBinding(bindings[0]);
-                }*/
 
                 // 如果 AOT 后置委托不为空就执行它
                 if (afterRemoveBinding != null) { afterRemoveBinding(this, bindings); }
@@ -319,7 +329,7 @@ namespace ToluaContainer.Container
                     // 移除后 bindings 的数量就会跟随着发生变化，GetTypes 方法也是直接返
                     // 回 typeBindings[type],所以一样会随着元素被删除而变化长度，所以每次移除第一个
                     // 元素就可以将所有的元素都移除干净
-                    RemoveBinding(bindings[0]);
+                    RemoveBinding(bindings[i]);
                 }
 
                 // 如果 AOT 后置委托不为空就执行它
@@ -388,7 +398,7 @@ namespace ToluaContainer.Container
             if (type == null || id == null) { return; }
 
             // 为了可以放入 AOT 委托执行而采用 List 形式储存
-            var bindings = new List<IBinding>() { bindingStorage[type][id] };
+            var bindings = new List<IBinding>() { GetBinding(type, id) };
 
             // 如果 AOT 前置委托不为空就执行它
             if (beforeRemoveBinding != null) { beforeRemoveBinding(this, bindings); }
@@ -396,8 +406,6 @@ namespace ToluaContainer.Container
             // 如果获取到了 binding 就进行删除
             if (bindings[0] != null)
             {
-                bindingStorage[type].Remove(id);
-                idBindings[id].Remove(bindings[0]);
                 typeBindings[type].Remove(bindings[0]);
             }
             bindings = null;
@@ -443,8 +451,6 @@ namespace ToluaContainer.Container
             // 如果 binding 的 id 不为空，从 bindingStorage、typeBindings、idBindings 三处移除
             else
             {
-                bindingStorage[binding.type].Remove(binding.id);
-                idBindings[binding.id].Remove(binding);
                 typeBindings[binding.type].Remove(binding);
             }
         }
@@ -481,37 +487,8 @@ namespace ToluaContainer.Container
 
             bool exist = typeBindings[binding.type].Contains(binding);
 
-            if (binding.id == null)
-            {
-                // 如果尚未被添加过才添加到 typeBindings 中
-                if (!exist) { typeBindings[binding.type].Add(binding); }
-            }
-            // 不为空时将引用储存到 bindingStorage 和 idBindings
-            else
-            {
-                // 如果不存在才添加到 typeBindings
-                if (!exist) { typeBindings[binding.type].Add(binding); }
-
-                // 如果已有 type 和 id 都相同的 binding，且它们不是同一个对象,就抛出异常 
-                if (bindingStorage[binding.type].Contains(binding.id) &&
-                    bindingStorage[binding.type][binding.id] != binding)
-                {
-                    throw new BindingSystemException(BindingSystemException.SAME_BINDING);
-                }
-
-                // 引用添加到 bindingStorage 以便根据 type 和 id 快速检索
-                bindingStorage[binding.type][binding.id] = binding;
-
-                // 引用添加到 idBindings 以便获取同 id 的所有 binding
-                if (!idBindings.ContainsKey(binding.id))
-                {
-                    idBindings.Add(binding.id, new List<IBinding>());
-                }
-                if (!idBindings[binding.id].Contains(binding))
-                {
-                    idBindings[binding.id].Add(binding);
-                }
-            }
+            // 如果尚未被添加过才添加到 typeBindings 中
+            if (!exist) { typeBindings[binding.type].Add(binding); }
         }
     }
 }

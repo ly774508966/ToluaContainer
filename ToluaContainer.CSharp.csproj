@@ -249,17 +249,14 @@
     <Compile Include="Assets\ToluaContainer\Container\Binding\Binder.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Binding\Binding.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Binding\BindingDefine.cs" />
-    <Compile Include="Assets\ToluaContainer\Container\Binding\BindingException.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Binding\BindingFactory.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Binding\Interface\IBinder.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Binding\Interface\IBinding.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Binding\Interface\IBindingFactory.cs" />
-    <Compile Include="Assets\ToluaContainer\Container\Binding\Storage.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Container\InjectionContainer.cs" />
-    <Compile Include="Assets\ToluaContainer\Container\Container\Interface\IContainerExtension.cs" />
+    <Compile Include="Assets\ToluaContainer\Container\Container\Interface\IContainerAOT.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Container\Interface\IInjectionContainer.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Injection\InjectionDefine.cs" />
-    <Compile Include="Assets\ToluaContainer\Container\Injection\InjectionException.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Injection\InjectionInfo.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Injection\Injector.cs" />
     <Compile Include="Assets\ToluaContainer\Container\Injection\Interface\IInjectionFactory.cs" />
@@ -293,9 +290,6 @@
     <Compile Include="Assets\ToluaContainer\Extensions\Event\Interface\IUpdatable.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\MonoInjection\InjectionUtil.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\MonoInjection\MonoInjection.cs" />
-    <Compile Include="Assets\ToluaContainer\Extensions\Pool\Interface\IPool.cs" />
-    <Compile Include="Assets\ToluaContainer\Extensions\Pool\Pool.cs" />
-    <Compile Include="Assets\ToluaContainer\Extensions\Pool\PoolException.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\StateInjection\StateInjection.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\AssetBundleInfo.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\PrefabInfo.cs" />
@@ -303,12 +297,12 @@
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\UnityContainerAOT.cs" />
     <Compile Include="Assets\Util\CompareUtils.cs" />
     <Compile Include="Assets\Util\CoroutineUtils.cs" />
+    <Compile Include="Assets\Util\Exceptions.cs" />
     <Compile Include="Assets\Util\Md5Utils.cs" />
     <Compile Include="Assets\Util\MethodUtils.cs" />
     <Compile Include="Assets\Util\PackagerUtils.cs" />
     <Compile Include="Assets\Util\PathUtils.cs" />
     <Compile Include="Assets\Util\TypeUtils.cs" />
-    <Compile Include="Assets\Util\UtilsException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\StreamingAssets\files.txt" />

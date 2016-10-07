@@ -12,12 +12,14 @@
 
 /*
  * 一般来说，binding 的 type 是其自身 value （类型或者实例）的同类或者父类
- * id 用于快速获取 binding，如果需要同1个类型的多个实例，可以将其以数组的形式保存在同一个 binding
- * ADDRESS 类型的 Binding 只能储存类型值，或者 prefab 信息类等可供复用的类型
+ * id 用于快速获取 binding,同类型的所有 binding 之间 id 是唯一的，不允许重复
+ * 如果类型与 id 都相同，又需要储存多个值，可以使用 MULTITON 类型的 binding
+ * 将多个值储存到一个 binding 之内
  */
 
 using System;
 using System.Collections.Generic;
+using Utils;
 
 namespace ToluaContainer.Container
 {
@@ -61,7 +63,6 @@ namespace ToluaContainer.Container
         #endregion
 
         #region IBinding implementation 
-
 
         #region property
 
@@ -168,7 +169,7 @@ namespace ToluaContainer.Container
         }
 
         /// <summary>
-        /// 向 binding 的 value 属性中添加一个object
+        /// 向 binding 的 value 属性中添加一个 object
         /// </summary>
         virtual public IBinding To(object o)
         {
@@ -180,11 +181,12 @@ namespace ToluaContainer.Container
 
             if (!PassToAdd(o))
             {
-                throw new BindingSystemException(BindingSystemException.TYPE_NOT_ASSIGNABLE);
+                throw new Exceptions(Exceptions.TYPE_NOT_ASSIGNABLE);
             }
 
             bool add = true;
             int count = _value.Count;
+
             for (int n = 0; n < count; n++)
             {
                 if (_value[n] == o) { add = false; }
@@ -218,8 +220,8 @@ namespace ToluaContainer.Container
             // 如果值约束不为复数就抛出异常
             if (_constraint == ConstraintType.SINGLE)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.BINDINGTYPE_NOT_ASSIGNABLE,
+                throw new Exceptions(
+                    string.Format(Exceptions.BINDINGTYPE_NOT_ASSIGNABLE,
                     "[To(object[] os)]",
                     _bindingType));
             }
@@ -236,7 +238,7 @@ namespace ToluaContainer.Container
                 
                 if (!PassToAdd(os[i]))
                 {
-                    throw new BindingSystemException(BindingSystemException.TYPE_NOT_ASSIGNABLE);
+                    throw new Exceptions(Exceptions.TYPE_NOT_ASSIGNABLE);
                 }
 
                 if (add) { _value.Add(os[i]); }
@@ -264,7 +266,23 @@ namespace ToluaContainer.Container
         /// </summary>
         virtual public IBinding As(object o)
         {
+            if (o == null) { return this; }
+
+            var bindings = _binder.GetTypes(_type);
+            if(bindings != null)
+            {
+                int lenght = bindings.Count;
+                for (int i = 0; i < lenght; i++)
+                {
+                    if (o.Equals(bindings[i].id))
+                    {
+                        throw new Exceptions(Exceptions.SAME_BINDING);
+                    }
+                }
+            }
+
             _id = (o == null) ? null : o;
+
             binder.Storing(this);
 
             return this;

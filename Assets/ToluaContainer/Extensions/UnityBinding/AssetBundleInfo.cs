@@ -36,6 +36,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Utils;
 
 namespace ToluaContainer.Container
 {
@@ -98,8 +99,8 @@ namespace ToluaContainer.Container
             _asetBundle = AssetBundle.LoadFromFile(url);
             if (_asetBundle == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.ASSETBUNDLE_LOAD_FAILURE, url));
+                throw new Exceptions(
+                    string.Format(Exceptions.ASSETBUNDLE_LOAD_FAILURE, url));
             }
         }
 
@@ -144,8 +145,8 @@ namespace ToluaContainer.Container
             _asetBundle = bundleLoadRequest.assetBundle;
             if (_asetBundle == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.ASSETBUNDLE_LOAD_FAILURE, url));
+                throw new Exceptions(
+                    string.Format(Exceptions.ASSETBUNDLE_LOAD_FAILURE, url));
             }
 
             if (handle != null) { handle(_asetBundle); }
@@ -172,8 +173,8 @@ namespace ToluaContainer.Container
             _asetBundle = AssetBundle.LoadFromMemory(www.bytes);
             if (_asetBundle == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.ASSETBUNDLE_LOAD_FAILURE, url));
+                throw new Exceptions(
+                    string.Format(Exceptions.ASSETBUNDLE_LOAD_FAILURE, url));
             }
         }
 
@@ -196,8 +197,8 @@ namespace ToluaContainer.Container
 
             if (_asetBundle == null)
             {
-                throw new BindingSystemException(
-                    string.Format(BindingSystemException.ASSETBUNDLE_LOAD_FAILURE, url));
+                throw new Exceptions(
+                    string.Format(Exceptions.ASSETBUNDLE_LOAD_FAILURE, url));
             }
         }
 

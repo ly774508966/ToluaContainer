@@ -1,67 +1,76 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using ToluaContainer;
+using ToluaContainer.Container;
 
-public class NewBehaviourScript
-{/*
-    [MenuItem("Test/Build Asset Bundles")]
-    static void BuildABs()
+public class NewBehaviourScript : MonoBehaviour
+{
+    void Start()
     {
-        // Put the bundles in a folder called "ABs" within the
-        // Assets folder.
-        AssetBundleBuild[] abb = new AssetBundleBuild[2];
-        abb[0].assetBundleName = "abc";
-        abb[0].assetBundleVariant = "1280x720";
-        abb[0].assetNames = new string[] { "Assets/aTestPic/Shared/ButtonClick.png" };
-        abb[0].assetBundleName = "abd";
-        abb[0].assetBundleVariant = "1280x720";
-        abb[0].assetNames = new string[] { "Assets/aTestPic/Shared/ButtonDisable.png" };
-        BuildPipeline.BuildAssetBundles("Assets/aTestPic/Shared", abb);
+        //Arrange 
+        IBinder binder = new Binder();
+        //Act
+        binder.MultipleBind(
+            new Type[] { typeof(someClass_b), typeof(int), typeof(someClass) },
+            new BindingType[] {
+                    BindingType.ADDRESS,
+                    BindingType.SINGLETON,
+                    BindingType.FACTORY })
+                .To(new object[] { typeof(someClass_b), 1, new someClass() })
+                .As(new object[] { null, 1, 2 })
+                .MultipleBind(
+            new Type[] { typeof(someClass_b), typeof(int), typeof(someClass) },
+            new BindingType[] {
+                    BindingType.ADDRESS,
+                    BindingType.SINGLETON,
+                    BindingType.FACTORY })
+                .To(new object[] { typeof(someClass_b), 1, new someClass() })
+                .MultipleBind(
+            new Type[] { typeof(someClass_b), typeof(int), typeof(someClass) },
+            new BindingType[] {
+                    BindingType.ADDRESS,
+                    BindingType.SINGLETON,
+                    BindingType.FACTORY })
+                .To(new object[] { typeof(someClass_b), 1, new someClass() })
+                .As(new object[] { null, 3, 4 });
+
+        Debug.Log(binder.GetAll().Count == 9);
+        Debug.Log(binder.GetBinding<int>(1) != null);
+        Debug.Log(binder.GetBinding<someClass>(2) != null);
+        Debug.Log(binder.GetBinding<int>(3) != null);
+        Debug.Log(binder.GetBinding<someClass>(4) != null);
     }
+}
+public class someClass : IInjectionFactory
+{
+    public int id;
+    virtual public object Create(InjectionInfo context) { return this; }
+}
 
-    [MenuItem("Test/Copy Lua Test")]
-    static void testLua()
+public class someClass_b : someClass
+{
+    override public object Create(InjectionInfo context) { return 1; }
+}
+
+public class someClass_c : someClass
+{
+    [Inject]
+    public someClass_b b;
+
+    override public object Create(InjectionInfo context) { return 2; }
+}
+
+public class TestCommand1 : Command
+{
+    public int num = 0;
+
+    public override void Execute(params object[] parameters)
     {
-        // 拼接路径字符串并创建
-        //string streamDir = Application.dataPath + "/" + AppDefine.LuaTempDir;
-        //string srcDir = Application.dataPath + "/" + AppDefine.AppName + "/Lua/";
-        CopyLuaTest(Application.dataPath + "/aTestPic/", Application.dataPath + "/aTestPic/lua/");
+        num++;
+        ((someClass)parameters[0]).id = num;
     }
-
-    [MenuItem("Test/load Test")]
-    static void testLoad()
-    {
-        object[] asset = AssetBundle.LoadFromFile(Application.dataPath + "/StreamingAssets/shared.unity3d.aaa").LoadAllAssets();
-        int length = asset.Length;
-        Debug.Log(length);
-        for(int i = 0; i < length; i++) { Debug.Log(asset[i].ToString()); }
-    }
-
-    public static void CopyLuaTest(string sourceDir, string destDir, bool appendext = true)
-    {
-        if (!Directory.Exists(sourceDir))
-        {
-            return;
-        }
-
-        // 返回目录及其子目录下所有lua文件名
-        string[] files = Directory.GetFiles(sourceDir, "*.lua", SearchOption.AllDirectories);
-
-        int len = sourceDir.Length;
-        if (sourceDir[len - 1] == '/' || sourceDir[len - 1] == '\\')
-        {
-            --len;
-        }
-
-        for (int i = 0; i < files.Length; i++)
-        {
-            string str = files[i].Remove(0, len);
-            string dest = destDir + str;
-            if (appendext) dest += ".bytes";
-            string dir = Path.GetDirectoryName(dest);
-            Directory.CreateDirectory(dir);
-            File.Copy(files[i], dest, true);
-        }
-    }*/
 }
