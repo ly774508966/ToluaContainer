@@ -11,38 +11,19 @@ public class NewBehaviourScript : MonoBehaviour
 {
     void Start()
     {
+        /*Debug.Log(Application.dataPath + "/StreamingAssets/05_assetbundle.unity3d");
         //Arrange 
         IBinder binder = new Binder();
         //Act
-        binder.MultipleBind(
-            new Type[] { typeof(someClass_b), typeof(int), typeof(someClass) },
-            new BindingType[] {
-                    BindingType.ADDRESS,
-                    BindingType.SINGLETON,
-                    BindingType.FACTORY })
-                .To(new object[] { typeof(someClass_b), 1, new someClass() })
-                .As(new object[] { null, 1, 2 })
-                .MultipleBind(
-            new Type[] { typeof(someClass_b), typeof(int), typeof(someClass) },
-            new BindingType[] {
-                    BindingType.ADDRESS,
-                    BindingType.SINGLETON,
-                    BindingType.FACTORY })
-                .To(new object[] { typeof(someClass_b), 1, new someClass() })
-                .MultipleBind(
-            new Type[] { typeof(someClass_b), typeof(int), typeof(someClass) },
-            new BindingType[] {
-                    BindingType.ADDRESS,
-                    BindingType.SINGLETON,
-                    BindingType.FACTORY })
-                .To(new object[] { typeof(someClass_b), 1, new someClass() })
-                .As(new object[] { null, 3, 4 });
+        IBinding binding = binder.Bind<AssetBundleInfo>().ToAssetBundleFromFile(Application.dataPath + "/Editor/Tests/Prefab_AssetBundleTest/cube.prefab.unity3d");*/
 
-        Debug.Log(binder.GetAll().Count == 9);
-        Debug.Log(binder.GetBinding<int>(1) != null);
-        Debug.Log(binder.GetBinding<someClass>(2) != null);
-        Debug.Log(binder.GetBinding<int>(3) != null);
-        Debug.Log(binder.GetBinding<someClass>(4) != null);
+        //Arrange 
+        IBinder binder = new Binder();
+        //Act
+        IBinding binding = binder.Bind<AssetBundleInfo>().ToAssetBundleAsyncFromFile(Application.dataPath + "/Editor/Tests/Prefab_AssetBundleTest/cube.prefab.unity3d");
+
+
+        Debug.Log(((AssetBundleInfo)binding.value).asetBundle != null);
     }
 }
 public class someClass : IInjectionFactory

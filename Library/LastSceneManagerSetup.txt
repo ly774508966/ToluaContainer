@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Editor/Tests/BindingSystemTests/BindingSystemTests_01.unity
+- path: Assets/Editor/Tests/Prefab_AssetBundleTest/Prefab_AssetBundleTest.unity
   isLoaded: 1
   isActive: 1
