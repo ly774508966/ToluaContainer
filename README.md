@@ -1,6 +1,6 @@
 # ToluaContainer 
 
-ToluaContainer 是基于 adic （https://github.com/intentor/adic） 进行改造，再并结合 Tolua （https://github.com/topameng/tolua） 的版本。
+ToluaContainer （https://github.com/joey1258/ToluaContainer） 是基于 adic （https://github.com/intentor/adic） 进行改造，再并结合 Tolua （https://github.com/topameng/tolua） 的版本。
 
 对比 adic 做了如下的修改：
 
