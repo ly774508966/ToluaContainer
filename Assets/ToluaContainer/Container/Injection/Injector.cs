@@ -382,7 +382,7 @@ namespace ToluaContainer.Container
         #region Resolve assist
 
         /// <summary>
-        /// 对参数 binding 进行过滤，根据 BindingType 进行实例化和注入操作，并返回其结果(有可能是数组）
+        /// 对参数 binding 进行过滤，根据 BindingType 获取实例和注入操作，并返回其结果(有可能是数组）
         /// </summary>
         virtual protected object ResolveBinding(
             IBinding binding,

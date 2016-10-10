@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using ToluaContainer;
+using ToluaContainer.Container;
+using Utils;
 using System;
 using System.Collections.Generic;
 using LuaInterface;
@@ -149,7 +152,51 @@ public static class CustomSettings
         _GT(typeof(QualitySettings)),
         _GT(typeof(RenderSettings)),                                                   
         _GT(typeof(BlendWeights)),           
-        _GT(typeof(RenderTexture)),
+        _GT(typeof(RenderTexture)),	
+        
+        // ToluaContainer
+        _GT(typeof(AppDefine)),
+        _GT(typeof(ToLuaConst)),
+        //_GT(typeof(Inject)),
+        //_GT(typeof(Priority)),
+        //_GT(typeof(InjectFromContainer)),
+        _GT(typeof(ToluaContainer.Container.Binder)),
+        _GT(typeof(Binding)),
+        _GT(typeof(BindingFactory)),
+        _GT(typeof(InjectionContainer)),
+        //_GT(typeof(Injector)),
+        //_GT(typeof(InjectionInfo)),
+        //_GT(typeof(ReflectionCache)),
+        //_GT(typeof(ReflectionFactory)),
+        //_GT(typeof(ReflectionInfo)),
+        //_GT(typeof(SetterInfo)),
+        //_GT(typeof(ToluaContainer.Container.ParameterInfo)),
+        //_GT(typeof(ToluaContainer.Container.MethodInfo)),
+        _GT(typeof(Command)),
+        _GT(typeof(CommandDispatch)),
+        _GT(typeof(CommandDispatcher)),
+        _GT(typeof(CommanderContainerAOT)),
+        _GT(typeof(CommanderContainerExtension)),
+        _GT(typeof(CommanderUtils)),
+        _GT(typeof(CommandException)),
+        _GT(typeof(CommandReference)),
+        _GT(typeof(NamespaceCommandBehaviour)),
+        _GT(typeof(TimedCommandDispatch)),
+        _GT(typeof(ContextRoot)),
+        //_GT(typeof(SceneInjector)),
+        _GT(typeof(EventBehaviour)),
+        _GT(typeof(EventContainerAOT)),
+        //_GT(typeof(InjectionUtil)),
+        //_GT(typeof(MonoInjection)),
+        //_GT(typeof(StateInjectionExtension)),
+        _GT(typeof(AssetBundleInfo)),
+        _GT(typeof(PrefabInfo)),
+        _GT(typeof(UnityBindingExtension)),
+        _GT(typeof(UnityContainerAOT)),
+        _GT(typeof(CompareUtils)),
+        _GT(typeof(MethodUtils)),
+        _GT(typeof(Exceptions)),
+        _GT(typeof(TypeUtils)),
     };
 
     /// <summary>
