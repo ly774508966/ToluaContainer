@@ -17,7 +17,7 @@ namespace ToluaContainer.Examples.Commander
 				.RegisterAOT<CommanderContainerAOT>()
 				.RegisterAOT<EventContainerAOT>()
 				.RegisterAOT<UnityContainerAOT>()
-                // 注册 "uMVVMCS.Examples.Commander" 命名空间下的所有 Command
+                // 注册 "ToluaContainer.Examples.Commander" 命名空间下的所有 Command
                 .RegisterCommands("ToluaContainer.Examples.Commander")
 				// 绑定 prefab
 				.Bind<Transform>().ToPrefab("06_Commander/Prism");

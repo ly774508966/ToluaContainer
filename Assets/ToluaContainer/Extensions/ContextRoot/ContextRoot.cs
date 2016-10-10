@@ -183,7 +183,6 @@ namespace ToluaContainer.Container
         {
             if (container.id != null)
             {
-                print(container == null);
                 if (!containersDic.ContainsKey(container.id))
                 {
                     containersDic[container.id] = new List<IInjectionContainer>(1);

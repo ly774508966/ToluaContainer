@@ -154,15 +154,20 @@ public static class CustomSettings
         _GT(typeof(BlendWeights)),           
         _GT(typeof(RenderTexture)),	
         
-        // ToluaContainer
+        /******************************** ToluaContainer *******************************
         _GT(typeof(AppDefine)),
         _GT(typeof(ToLuaConst)),
+
         //_GT(typeof(Inject)),
         //_GT(typeof(Priority)),
         //_GT(typeof(InjectFromContainer)),
+
         _GT(typeof(ToluaContainer.Container.Binder)),
         _GT(typeof(Binding)),
-        _GT(typeof(BindingFactory)),
+        _GT(typeof(ConstraintType)),
+        _GT(typeof(BindingType)),
+        //_GT(typeof(BindingFactory)),
+
         _GT(typeof(InjectionContainer)),
         //_GT(typeof(Injector)),
         //_GT(typeof(InjectionInfo)),
@@ -189,14 +194,15 @@ public static class CustomSettings
         //_GT(typeof(InjectionUtil)),
         //_GT(typeof(MonoInjection)),
         //_GT(typeof(StateInjectionExtension)),
-        _GT(typeof(AssetBundleInfo)),
+
+        //_GT(typeof(AssetBundleInfo)),
         _GT(typeof(PrefabInfo)),
         _GT(typeof(UnityBindingExtension)),
         _GT(typeof(UnityContainerAOT)),
         _GT(typeof(CompareUtils)),
         _GT(typeof(MethodUtils)),
         _GT(typeof(Exceptions)),
-        _GT(typeof(TypeUtils)),
+        _GT(typeof(TypeUtils)),*/
     };
 
     /// <summary>

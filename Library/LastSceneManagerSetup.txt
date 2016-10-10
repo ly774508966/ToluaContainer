@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Examples/10_BindBindingAtLuaSide/BindBindingAtLuaSide.unity
+- path: Assets/Examples/06_Commander/Commander.unity
   isLoaded: 1
   isActive: 1
