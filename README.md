@@ -18,6 +18,6 @@ ToluaContainer （https://github.com/joey1258/ToluaContainer） 是基于 adic �
 
 一、不建议使用 AssetBundleInfo 相关方法，因为 Tolua 自带相关方法，并且更有效率
 
-二、由于 lua 的 table 是基础 c 实现的，比 c# 效率更高，因此 binding 系统在 lua 中重新实现（未完成，暂未上传）
+二、由于 lua 的 table 是基础 c 实现的，比 c# 的字典效率更高，因此 binding 系统在 lua 中重新实现（未完成，暂未上传）
 
 请移动到 https://github.com/joey1258/ToluaContainer/wiki 了解更多
