@@ -21,7 +21,7 @@ public class UpdateAssetTool : MonoBehaviour
     IEnumerator Request()
     {
         // 拼接请求字符串
-        string url = PathUtils.WebUrl;
+        string url = AppDefine.WebUrl;
         string random = DateTime.Now.ToString("yyyymmddhhmmss");
         string listUrl = url + "files.txt?v=" + random;
         Debug.Log("LoadUpdate---->>>" + listUrl);
@@ -29,7 +29,7 @@ public class UpdateAssetTool : MonoBehaviour
         // 发送请求
         WWWForm form = new WWWForm();
         form.AddField("str", listUrl);
-        WWW www = new WWW(PathUtils.WebUrl, form);
+        WWW www = new WWW(AppDefine.WebUrl, form);
 
         yield return www;
         // 如果失败就打印消息并退出

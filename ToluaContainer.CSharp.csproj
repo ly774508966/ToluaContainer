@@ -300,7 +300,6 @@
     <Compile Include="Assets\Util\Md5Utils.cs" />
     <Compile Include="Assets\Util\MethodUtils.cs" />
     <Compile Include="Assets\Util\PackagerUtils.cs" />
-    <Compile Include="Assets\Util\PathUtils.cs" />
     <Compile Include="Assets\Util\TypeUtils.cs" />
   </ItemGroup>
   <ItemGroup>

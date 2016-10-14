@@ -48,9 +48,9 @@ namespace Utils
         public static void BuildAssetResource(bool deleteExists, BuildTarget target)
         {
             // 如果数据存放目录已经存在则删除它 (pc为"c:/" + 项目名 + "/")
-            if (Directory.Exists(PathUtils.DataPath))
+            if (Directory.Exists(AppDefine.DataPath))
             {
-                Directory.Delete(PathUtils.DataPath, true);
+                Directory.Delete(AppDefine.DataPath, true);
             }
 
             // 获取 streaming 目录(项目目录/Assets/StreamingAssets)，如果已经存在则删除它
@@ -76,7 +76,7 @@ namespace Utils
             /* ------------------------------------------------------*/
 
             // 获取资源地址（/Assets/StreamingAssets）
-            string resPath = "Assets/" + PathUtils.AssetDir;
+            string resPath = "Assets/" + AppDefine.AssetDir;
             // BuildAssetBundleOptions ： 在创建时不编译 | 哈希 id
             BuildAssetBundleOptions options = 
                 BuildAssetBundleOptions.DeterministicAssetBundle |
@@ -100,7 +100,7 @@ namespace Utils
         /// </summary>
         static void HandleBundle()
         {
-            string resPath = AppDataPath + "/" + PathUtils.AssetDir + "/";
+            string resPath = AppDataPath + "/" + AppDefine.AssetDir + "/";
             if (!Directory.Exists(resPath)) Directory.CreateDirectory(resPath);
 
             string content = File.ReadAllText(Application.dataPath + "/Files/BuildMap_cvs/AssetBundleInfo.csv");
@@ -123,9 +123,9 @@ namespace Utils
         public static void BuildLuaResource(bool all, bool deleteExists, BuildTarget target)
         {
             // 如果数据存放目录已经存在则删除它 (pc为"c:/" + 项目名 + "/")
-            if (Directory.Exists(PathUtils.DataPath))
+            if (Directory.Exists(AppDefine.DataPath))
             {
-                Directory.Delete(PathUtils.DataPath, true);
+                Directory.Delete(AppDefine.DataPath, true);
             }
 
             // 获取 streaming 目录(项目目录/Assets/StreamingAssets)，如果已经存在则删除它
@@ -147,7 +147,7 @@ namespace Utils
             HandleLuaBundle(all);
 
             // 获取资源地址（/Assets/StreamingAssets）
-            string resPath = "Assets/" + PathUtils.AssetDir;
+            string resPath = "Assets/" + AppDefine.AssetDir;
             // BuildAssetBundleOptions ： 在创建时不编译 | 哈希 id
             BuildAssetBundleOptions options =
                 BuildAssetBundleOptions.DeterministicAssetBundle |
@@ -159,7 +159,7 @@ namespace Utils
             BuildFileIndex();
 
             // 拼接 lua 临时目录
-            string luaTempDir = Application.dataPath + PathUtils.LuaTempDir;
+            string luaTempDir = Application.dataPath + AppDefine.LuaTempDir;
             // 删除 lua 临时目录
             if (Directory.Exists(luaTempDir)) Directory.Delete(luaTempDir, true);
             // 刷新
@@ -171,7 +171,7 @@ namespace Utils
         /// </summary>
         static void HandleLuaBundle(bool all)
         {
-            string luaTempDir = Application.dataPath + PathUtils.LuaTempDir;
+            string luaTempDir = Application.dataPath + AppDefine.LuaTempDir;
             if (!Directory.Exists(luaTempDir)) Directory.CreateDirectory(luaTempDir);
 
             string content = File.ReadAllText(Application.dataPath + "/Files/BuildMap_cvs/AssetBundleInfo.csv");
@@ -217,7 +217,7 @@ namespace Utils
                 AddBuildMap("lua/lua_" + _name + AppDefine.ExtName,"*.bytes", newPath);
             }
 
-            AddBuildMap("lua/lua" + AppDefine.ExtName, "*.bytes", "Assets" + PathUtils.LuaTempDir);
+            AddBuildMap("lua/lua" + AppDefine.ExtName, "*.bytes", "Assets" + AppDefine.LuaTempDir);
             AssetDatabase.Refresh();
         }
 
