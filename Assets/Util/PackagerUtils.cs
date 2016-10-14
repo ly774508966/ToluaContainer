@@ -76,7 +76,7 @@ namespace Utils
             /* ------------------------------------------------------*/
 
             // 获取资源地址（/Assets/StreamingAssets）
-            string resPath = "Assets/" + AppDefine.AssetDir;
+            string resPath = "Assets/" + PathUtils.AssetDir;
             // BuildAssetBundleOptions ： 在创建时不编译 | 哈希 id
             BuildAssetBundleOptions options = 
                 BuildAssetBundleOptions.DeterministicAssetBundle |
@@ -100,7 +100,7 @@ namespace Utils
         /// </summary>
         static void HandleBundle()
         {
-            string resPath = AppDataPath + "/" + AppDefine.AssetDir + "/";
+            string resPath = AppDataPath + "/" + PathUtils.AssetDir + "/";
             if (!Directory.Exists(resPath)) Directory.CreateDirectory(resPath);
 
             string content = File.ReadAllText(Application.dataPath + "/Files/BuildMap_cvs/AssetBundleInfo.csv");
@@ -147,7 +147,7 @@ namespace Utils
             HandleLuaBundle(all);
 
             // 获取资源地址（/Assets/StreamingAssets）
-            string resPath = "Assets/" + AppDefine.AssetDir;
+            string resPath = "Assets/" + PathUtils.AssetDir;
             // BuildAssetBundleOptions ： 在创建时不编译 | 哈希 id
             BuildAssetBundleOptions options =
                 BuildAssetBundleOptions.DeterministicAssetBundle |
@@ -159,7 +159,7 @@ namespace Utils
             BuildFileIndex();
 
             // 拼接 lua 临时目录
-            string luaTempDir = Application.dataPath + AppDefine.LuaTempDir;
+            string luaTempDir = Application.dataPath + PathUtils.LuaTempDir;
             // 删除 lua 临时目录
             if (Directory.Exists(luaTempDir)) Directory.Delete(luaTempDir, true);
             // 刷新
@@ -171,7 +171,7 @@ namespace Utils
         /// </summary>
         static void HandleLuaBundle(bool all)
         {
-            string luaTempDir = Application.dataPath + AppDefine.LuaTempDir;
+            string luaTempDir = Application.dataPath + PathUtils.LuaTempDir;
             if (!Directory.Exists(luaTempDir)) Directory.CreateDirectory(luaTempDir);
 
             string content = File.ReadAllText(Application.dataPath + "/Files/BuildMap_cvs/AssetBundleInfo.csv");
@@ -217,7 +217,7 @@ namespace Utils
                 AddBuildMap("lua/lua_" + _name + AppDefine.ExtName,"*.bytes", newPath);
             }
 
-            AddBuildMap("lua/lua" + AppDefine.ExtName, "*.bytes", "Assets" + AppDefine.LuaTempDir);
+            AddBuildMap("lua/lua" + AppDefine.ExtName, "*.bytes", "Assets" + PathUtils.LuaTempDir);
             AssetDatabase.Refresh();
         }
 

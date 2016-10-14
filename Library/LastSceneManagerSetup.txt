@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Examples/06_Commander/Commander.unity
+- path: Assets/Examples/09_HotUpdate/HotUpdate.unity
   isLoaded: 1
   isActive: 1
