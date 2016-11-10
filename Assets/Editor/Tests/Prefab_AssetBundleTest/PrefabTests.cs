@@ -18,7 +18,7 @@ using NUnit.Framework;
 using ToluaContainer;
 using ToluaContainer.Container;
 
-namespace uMVVMCS_NUitTests
+namespace ToluaContainer_NUitTests
 {
     [TestFixture]
     public class PrefabTests

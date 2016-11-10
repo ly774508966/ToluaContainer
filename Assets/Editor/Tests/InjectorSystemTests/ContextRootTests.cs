@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using ToluaContainer;
 using ToluaContainer.Container;
 
-namespace uMVVMCS_NUitTests
+namespace ToluaContainer_NUitTests
 {
     [TestFixture]
     public class ContextRootTests : MonoBehaviour

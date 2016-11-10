@@ -19,7 +19,7 @@ using NUnit.Framework;
 using ToluaContainer;
 using ToluaContainer.Container;
 
-namespace uMVVMCS_NUitTests
+namespace ToluaContainer_NUitTests
 {
     public class someClass : IInjectionFactory
     {

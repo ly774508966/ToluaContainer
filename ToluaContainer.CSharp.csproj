@@ -296,8 +296,8 @@
     <Compile Include="Assets\ToluaContainer\Extensions\UnityBinding\UnityContainerAOT.cs" />
     <Compile Include="Assets\Util\CompareUtils.cs" />
     <Compile Include="Assets\Util\CoroutineUtils.cs" />
+    <Compile Include="Assets\Util\CryptoUtils.cs" />
     <Compile Include="Assets\Util\Exceptions.cs" />
-    <Compile Include="Assets\Util\Md5Utils.cs" />
     <Compile Include="Assets\Util\MethodUtils.cs" />
     <Compile Include="Assets\Util\PackagerUtils.cs" />
     <Compile Include="Assets\Util\TypeUtils.cs" />

@@ -74,7 +74,7 @@ public class UpdateAssetTool : MonoBehaviour
             if (!canUpdate)
             {
                 string remoteMd5 = keyValue[1].Trim();
-                string localMd5 = Utils.Md5Utils.md5file(localfile);
+                string localMd5 = Utils.CryptoUtils.md5file(localfile);
                 canUpdate = !remoteMd5.Equals(localMd5);
                 if (canUpdate) File.Delete(localfile);
             }
