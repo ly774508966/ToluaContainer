@@ -21,3 +21,9 @@ ToluaContainer （https://github.com/joey1258/ToluaContainer） 是基于 adic �
 二、由于 lua 的 table 是基础 c 实现的，比 c# 的字典效率更高，因此 binding 系统在 lua 中重新实现（未完成，暂未上传）
 
 请移动到 https://github.com/joey1258/ToluaContainer/wiki 了解更多
+
+*****************************************************************************
+双11修正：
+无法设置 Container 的 id 的问题
+
+回复某位热心朋友的反馈：关于执行注入导致UINTY崩溃的问题：目前测试的结果是如果对静态变量附加[Inject]特性执行注入确实会导致崩溃，暂时还没有找到解决办法，当前只能避免对静态变量附加[Inject]特性执行注入，待有解决方法后再行修正。
