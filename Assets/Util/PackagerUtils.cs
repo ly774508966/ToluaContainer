@@ -278,7 +278,7 @@ namespace Utils
                 if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
 
                 // 计算当前字符串的 md5 值
-                string md5 = CryptoUtils.md5file(file);
+                string md5 = Md5Utils.md5file(file);
                 // 获取当前字符串删除与 resPath 相同的字符后的结果
                 string value = file.Replace(resPath, string.Empty);
 

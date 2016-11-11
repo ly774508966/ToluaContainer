@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Utils
 {
-    public class CryptoUtils
+    public class Md5Utils
     {
 
         /// <summary>

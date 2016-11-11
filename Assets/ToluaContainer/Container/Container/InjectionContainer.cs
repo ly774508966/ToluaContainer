@@ -414,7 +414,8 @@ namespace ToluaContainer.Container
         /// </summary>
         virtual protected void RegisterSelf()
         {
-            BindSingleton<IInjectionContainer>().To(this);
+            if (id != null) { BindSingleton<IInjectionContainer>().To(this).As(id); }
+            else { BindSingleton<IInjectionContainer>().To(this); }
         }
 
     }

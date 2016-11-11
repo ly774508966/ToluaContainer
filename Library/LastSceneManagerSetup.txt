@@ -1,4 +1,1 @@
-sceneSetups:
-- path: Assets/Examples/09_HotUpdate/HotUpdate.unity
-  isLoaded: 1
-  isActive: 1
+sceneSetups: []

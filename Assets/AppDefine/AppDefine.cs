@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using ToluaContainer.Container;
 
 public static class AppDefine
 {
@@ -114,6 +115,50 @@ public static class AppDefine
 #else
         return string.Empty;
 #endif
+        }
+    }
+
+    /// <summary>
+    /// 场景根物体
+    /// </summary>
+    public static GameObject RootObject
+    {
+        get
+        {
+            return GameObject.Find(RootObjectName);
+        }
+    }
+
+    /// <summary>
+    /// 切换场景时不进行销毁的根物体
+    /// </summary>
+    public static GameObject DDOLRootObject
+    {
+        get
+        {
+            return GameObject.Find(DDOLRootObjectName);
+        }
+    }
+
+    /// <summary>
+    /// 当前场景的 root
+    /// </summary>
+    public static IContextRoot Root
+    {
+        get
+        {
+            return GameObject.Find(RootObjectName).GetComponent<IContextRoot>();
+        }
+    }
+
+    /// <summary>
+    /// 切换场景时不进行销毁的 root
+    /// </summary>
+    public static IContextRoot DDOLRoot
+    {
+        get
+        {
+            return GameObject.Find(DDOLRootObjectName).GetComponent<IContextRoot>();
         }
     }
 }
