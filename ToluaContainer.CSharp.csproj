@@ -271,7 +271,6 @@
     <Compile Include="Assets\ToluaContainer\Extensions\Commander\Command.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Commander\CommandDispatch.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Commander\CommandDispatcher.cs" />
-    <Compile Include="Assets\ToluaContainer\Extensions\Commander\CommandException.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Commander\CommandReference.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Commander\CommanderContainerAOT.cs" />
     <Compile Include="Assets\ToluaContainer\Extensions\Commander\CommanderContainerExtension.cs" />
